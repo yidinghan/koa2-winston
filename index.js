@@ -1,20 +1,19 @@
 const winston = require('winston');
-const omit = require('lodash.omit');
+const unset = require('lodash.unset');
+const pick = require('lodash.pick');
 
 exports.serializer = {
   req: (payload) => {
     const {
-      headersIgnore = ['cookie'],
+      reqIgnores = ['headers.cookie'],
+      reqkeys = ['headers', 'url'],
     } = payload;
 
     return (req) => {
-      const headers = omit(req.headers || {}, headersIgnore);
-      const url = req.url;
+      const logObject = pick(req, reqkeys);
+      reqIgnores.forEach(unset.bind(unset, logObject));
 
-      return {
-        headers,
-        url,
-      };
+      return logObject;
     };
   },
 };

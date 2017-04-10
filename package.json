@@ -3,10 +3,11 @@
   "version": "1.2.1",
   "description": "koa2 version winston logger like express-winston",
   "main": "index.js",
-  "engines" : {
-    "node" : ">=7.6"
+  "engines": {
+    "node": ">=7.6"
   },
   "scripts": {
+    "lint": "eslint ./test/*.js ./index.js --fix",
     "release": "standard-version",
     "test": "ava"
   },
@@ -31,7 +32,8 @@
     "winston": "^2.3.1"
   },
   "dependencies": {
-    "lodash.omit": "^4.5.0"
+    "lodash.pick": "^4.4.0",
+    "lodash.unset": "^4.5.2"
   },
   "devDependencies": {
     "ava": "^0.19.0",
