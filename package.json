@@ -1,0 +1,26 @@
+{
+  "name": "koa2-winston",
+  "version": "1.0.0",
+  "description": "koa2 version winston logger like express-winston",
+  "main": "index.js",
+  "scripts": {
+    "test": "ava"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yidinghan/koa2-winston.git"
+  },
+  "keywords": [
+    "koa",
+    "koa2",
+    "winston",
+    "logger",
+    "nodejs"
+  ],
+  "author": "yidinghan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yidinghan/koa2-winston/issues"
+  },
+  "homepage": "https://github.com/yidinghan/koa2-winston#readme"
+}
