@@ -4,7 +4,7 @@ const set = require('lodash.set');
 const unset = require('lodash.unset');
 const pick = require('lodash.pick');
 
-exports.keysRecorder = (payload) => {
+exports.keysRecorder = (payload = {}) => {
   const {
     defaults = [],
     whitelist = [],
