@@ -1,12 +1,35 @@
 const winston = require('winston');
+const get = require('lodash.get');
+const set = require('lodash.set');
 const unset = require('lodash.unset');
 const pick = require('lodash.pick');
+
+exports.keysRecorder = (payload) => {
+  const {
+    defaults = [],
+    whitelist = [],
+    blacklist = [],
+  } = payload;
+
+  return (target) => {
+    const logObject = pick(target, defaults);
+
+    whitelist.forEach((path) => {
+      set(logObject, path, get(target, path));
+    });
+    blacklist.forEach((path) => {
+      set(logObject, path, get(target, path));
+    });
+
+    return logObject;
+  };
+};
 
 exports.serializer = {
   req: (payload) => {
     const {
       reqIgnores = ['headers.cookie'],
-      reqkeys = ['headers', 'url'],
+      reqkeys = ['headers', 'url', 'method', 'httpVersion', 'originalUrl', 'query'],
     } = payload;
 
     return (req) => {
