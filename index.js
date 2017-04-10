@@ -34,6 +34,15 @@ const pick = require('lodash.pick');
  *   foobar: { a: 3, b: 4 }
  * }) // { foo: 1, foobar: { a: 3, b: 4 } }
  *
+ * // with defaults and blacklist
+ * const recorder = keysRecorder({ defaults: ['foobar'], blacklist: ['foobar.a'] });
+ * recorder() // {}
+ * recorder({
+ *   foo: 1,
+ *   bar: 2,
+ *   foobar: { a: 3, b: 4 }
+ * }) // { foobar: { a: 3 } }
+ *
  * // with defaults and whitelist and blacklist
  * const recorder = keysRecorder({
  *   defaults: ['foo'],
