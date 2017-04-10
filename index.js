@@ -12,8 +12,9 @@ exports.keysRecorder = (payload = {}) => {
   } = payload;
 
   return (target) => {
-    const logObject = pick(target, defaults);
+    if (!target) { return {}; }
 
+    const logObject = pick(target, defaults);
     whitelist.forEach((path) => {
       set(logObject, path, get(target, path));
     });
