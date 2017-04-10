@@ -4,6 +4,49 @@ const set = require('lodash.set');
 const unset = require('lodash.unset');
 const pick = require('lodash.pick');
 
+/**
+ * keysRecorder
+ * use ldoash pick, get and set to collect data from given target object
+ *
+ * @param {object} payload - input arguments
+ * @param {string[]} [payload.defaults] - default keys will be collected
+ * @param {string[]} [payload.whitelist] - keys will be collected as
+ * additional part
+ * @param {string[]} [payload.blacklist] - keys that will be ignored at last
+ * @return {function} closure function, setting by given payload
+ * @example
+ * // without payload
+ * const recorder = keysRecorder();
+ * recorder() // {}
+ * recorder({ foo: 1, bar: 2, foobar: { a: 3, b: 4 } }) // {}
+ *
+ * // with defaults
+ * const recorder = keysRecorder({ defaults: ['foo'] });
+ * recorder() // {}
+ * recorder({ foo: 1, bar: 2, foobar: { a: 3, b: 4 } }) // { foo: 1 }
+ *
+ * // with defaults and whitelist
+ * const recorder = keysRecorder({ defaults: ['foo'], whitelist: ['foobar'] });
+ * recorder() // {}
+ * recorder({
+ *   foo: 1,
+ *   bar: 2,
+ *   foobar: { a: 3, b: 4 }
+ * }) // { foo: 1, foobar: { a: 3, b: 4 } }
+ *
+ * // with defaults and whitelist and blacklist
+ * const recorder = keysRecorder({
+ *   defaults: ['foo'],
+ *   whitelist: ['foobar'],
+ *   blacklist: ['foobar.b'],
+ * });
+ * recorder() // {}
+ * recorder({
+ *   foo: 1,
+ *   bar: 2,
+ *   foobar: { a: 3, b: 4 }
+ * }) // { foo: 1, foobar: { a: 3 } }
+ */
 exports.keysRecorder = (payload = {}) => {
   const {
     defaults = [],
