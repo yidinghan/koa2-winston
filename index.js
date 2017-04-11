@@ -71,7 +71,7 @@ exports.keysRecorder = (payload = {}) => {
       set(logObject, path, get(target, path));
     });
     blacklist.forEach((path) => {
-      set(logObject, path, get(target, path));
+      unset(logObject, path, get(target, path));
     });
 
     return logObject;
