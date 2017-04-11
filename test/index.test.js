@@ -29,20 +29,20 @@ test('keysRecorder:should get defaults keys', (t) => {
   t.deepEqual(result, { a: 1 });
 });
 
-test('keysRecorder:should get defaults and whitelist', (t) => {
+test('keysRecorder:should get defaults and selects', (t) => {
   const recorder = keysRecorder({
     defaults: ['a'],
-    whitelist: ['b'],
+    selects: ['b'],
   });
   const result = recorder(testTarget);
 
   t.deepEqual(result, { a: 1, b: 2 });
 });
 
-test('keysRecorder:should get defaults and blacklist', (t) => {
+test('keysRecorder:should get defaults and unselects', (t) => {
   const recorder = keysRecorder({
     defaults: ['c'],
-    blacklist: ['c.e'],
+    unselects: ['c.e'],
   });
   const result = recorder(testTarget);
 
@@ -52,7 +52,7 @@ test('keysRecorder:should get defaults and blacklist', (t) => {
 test('keysRecorder:should get empty object without target', (t) => {
   const recorder = keysRecorder({
     defaults: ['c'],
-    blacklist: ['c.e'],
+    unselects: ['c.e'],
   });
   const result = recorder();
 

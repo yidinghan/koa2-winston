@@ -10,9 +10,9 @@ const pick = require('lodash.pick');
  *
  * @param {object} payload - input arguments
  * @param {string[]} [payload.defaults] - default keys will be collected
- * @param {string[]} [payload.whitelist] - keys will be collected as
+ * @param {string[]} [payload.selects] - keys will be collected as
  * additional part
- * @param {string[]} [payload.blacklist] - keys that will be ignored at last
+ * @param {string[]} [payload.unselects] - keys that will be ignored at last
  * @return {function} closure function, setting by given payload
  * @example
  * // without payload
@@ -25,8 +25,8 @@ const pick = require('lodash.pick');
  * recorder() // {}
  * recorder({ foo: 1, bar: 2, foobar: { a: 3, b: 4 } }) // { foo: 1 }
  *
- * // with defaults and whitelist
- * const recorder = keysRecorder({ defaults: ['foo'], whitelist: ['foobar'] });
+ * // with defaults and selects
+ * const recorder = keysRecorder({ defaults: ['foo'], selects: ['foobar'] });
  * recorder() // {}
  * recorder({
  *   foo: 1,
@@ -34,8 +34,8 @@ const pick = require('lodash.pick');
  *   foobar: { a: 3, b: 4 }
  * }) // { foo: 1, foobar: { a: 3, b: 4 } }
  *
- * // with defaults and blacklist
- * const recorder = keysRecorder({ defaults: ['foobar'], blacklist: ['foobar.a'] });
+ * // with defaults and unselects
+ * const recorder = keysRecorder({ defaults: ['foobar'], unselects: ['foobar.a'] });
  * recorder() // {}
  * recorder({
  *   foo: 1,
@@ -43,11 +43,11 @@ const pick = require('lodash.pick');
  *   foobar: { a: 3, b: 4 }
  * }) // { foobar: { a: 3 } }
  *
- * // with defaults and whitelist and blacklist
+ * // with defaults and selects and unselects
  * const recorder = keysRecorder({
  *   defaults: ['foo'],
- *   whitelist: ['foobar'],
- *   blacklist: ['foobar.b'],
+ *   selects: ['foobar'],
+ *   unselects: ['foobar.b'],
  * });
  * recorder() // {}
  * recorder({
@@ -59,18 +59,18 @@ const pick = require('lodash.pick');
 exports.keysRecorder = (payload = {}) => {
   const {
     defaults = [],
-    whitelist = [],
-    blacklist = [],
+    selects = [],
+    unselects = [],
   } = payload;
 
   return (target) => {
     if (!target) { return {}; }
 
     const logObject = {};
-    defaults.concat(whitelist).forEach((path) => {
+    defaults.concat(selects).forEach((path) => {
       set(logObject, path, get(target, path));
     });
-    blacklist.forEach((path) => {
+    unselects.forEach((path) => {
       unset(logObject, path, get(target, path));
     });
 
