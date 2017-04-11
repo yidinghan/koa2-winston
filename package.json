@@ -9,6 +9,7 @@
   "scripts": {
     "lint": "eslint ./test/*.js ./index.js --fix",
     "release": "standard-version",
+    "nyc": "nyc npm test && nyc report --reporter=html",
     "test": "ava"
   },
   "repository": {
@@ -42,6 +43,7 @@
     "eslint": "^3.19.0",
     "eslint-config-airbnb-base": "^11.1.3",
     "eslint-plugin-import": "^2.2.0",
+    "nyc": "^10.2.0",
     "winston": "^2.3.1"
   }
 }
