@@ -2,6 +2,7 @@ const winston = require('winston');
 const get = require('lodash.get');
 const set = require('lodash.set');
 const unset = require('lodash.unset');
+const { format } = require('util');
 
 /**
  * kong request and respone logger example
@@ -168,6 +169,7 @@ exports.logger = (payload = {}) => {
   const {
     transports = [new winston.transports.Console({ json: true })],
     level = 'info',
+    msg = 'HTTP %s %s',
   } = payload;
 
   const logger = payload.logger || new winston.Logger({
@@ -181,13 +183,12 @@ exports.logger = (payload = {}) => {
       req: reqSerializer(ctx.request),
       started_at: Date.now(),
     };
-    meta.req.url = ctx.url;
-    const msg = 'msg';
+    const loggerMsg = format(msg, meta.req.method, meta.req.url);
 
     await next();
 
     meta.res = resSerializer(ctx.response);
     meta.duration = Date.now() - meta.started_at;
-    logger[level](msg, meta);
+    logger[level](loggerMsg, meta);
   };
 };
