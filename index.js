@@ -187,6 +187,7 @@ exports.logger = (payload = {}) => {
     await next();
 
     meta.res = resSerializer(ctx.response);
+    meta.duration = Date.now() - meta.started_at;
     logger[level](msg, meta);
   };
 };
