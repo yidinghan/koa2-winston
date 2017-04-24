@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.5.0"></a>
+# [1.5.0](https://github.com/yidinghan/koa2-winston/compare/v1.4.0...v1.5.0) (2017-04-24)
+
+
+### Features
+
+* **serializer:** use keysRecorder to build serializer for ctx.request ([e068c46](https://github.com/yidinghan/koa2-winston/commit/e068c46))
+
+
+
 <a name="1.4.0"></a>
 # [1.4.0](https://github.com/yidinghan/koa2-winston/compare/v1.3.0...v1.4.0) (2017-04-11)
 
