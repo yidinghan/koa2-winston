@@ -19,12 +19,13 @@ class CustomTransport extends winston.Transport {
     callback(null, true);
   }
 }
-const useLogger = (payload) => {
+const defaultHandler = (ctx) => {
+  ctx.body = 'dingding';
+};
+const useLogger = (payload, handler = defaultHandler) => {
   const app = new Koa();
   app.use(logger(payload));
-  app.use((ctx) => {
-    ctx.body = 'dingding';
-  });
+  app.use(handler);
 
   return app.listen();
 };
@@ -56,4 +57,41 @@ test('successful use custom transport', async (t) => {
   ['req', 'res', 'duration', 'started_at'].forEach((key) => {
     t.true(Object.keys(meta).includes(key));
   });
+});
+
+test('successful display correct url in msg', async (t) => {
+  const msgs = [];
+  const app = useLogger({
+    transports: [new CustomTransport(msgs)],
+  });
+  await request(app).post('/test').expect(200);
+
+  const [{ msg }] = msgs;
+  t.is(msg, 'HTTP POST /test');
+});
+
+test('should use input level as default level', async (t) => {
+  const msgs = [];
+  const app = useLogger({
+    level: 'error',
+    transports: [new CustomTransport(msgs)],
+  });
+  await request(app).post('/test').expect(200);
+
+  const [{ level }] = msgs;
+  t.is(level, 'error');
+});
+
+test('should still record logger when error have been throw out', async (t) => {
+  const msgs = [];
+  const errorHandler = (ctx) => {
+    ctx.throw('test');
+  };
+  const app = useLogger({
+    transports: [new CustomTransport(msgs)],
+  }, errorHandler);
+  await request(app).post('/test').expect(500);
+
+  const [{ level }] = msgs;
+  t.is(level, 'error');
 });
