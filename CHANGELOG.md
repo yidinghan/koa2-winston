@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.6.0"></a>
+# [1.6.0](https://github.com/yidinghan/koa2-winston/compare/v1.5.0...v1.6.0) (2017-04-24)
+
+
+### Features
+
+* **logger:** add duration result to meta ([2049ddb](https://github.com/yidinghan/koa2-winston/commit/2049ddb))
+* **logger:** add koa res serializer ([dff23e4](https://github.com/yidinghan/koa2-winston/commit/dff23e4))
+* **logger:** add started_at and req.length, replace originalUrl by href ([d9840e0](https://github.com/yidinghan/koa2-winston/commit/d9840e0))
+* **logger:** use on-finished to get final response result ([a21cfc2](https://github.com/yidinghan/koa2-winston/commit/a21cfc2))
+* **logger:** use util.format as template to generate logger msg ([399cf24](https://github.com/yidinghan/koa2-winston/commit/399cf24))
+
+
+
 <a name="1.5.0"></a>
 # [1.5.0](https://github.com/yidinghan/koa2-winston/compare/v1.4.0...v1.5.0) (2017-04-24)
 
