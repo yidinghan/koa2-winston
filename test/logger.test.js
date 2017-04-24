@@ -1,37 +1,51 @@
 const { test } = require('ava');
 const Koa = require('koa');
-const supertest = require('supertest');
+const winston = require('winston');
+const request = require('supertest');
 
 const { logger } = require('../index');
 
-let app;
-let server;
-const request = () => {
-  server = server || app.listen();
-  return supertest(server);
-};
+class CustomTransport extends winston.Transport {
+  constructor(msgs = []) {
+    super();
+    this.msgs = msgs;
+  }
+  log(level, msg, meta, callback) {
+    this.msgs.push({
+      level,
+      msg,
+      meta,
+    });
+    callback(null, true);
+  }
+}
 const useLogger = (payload) => {
+  const app = new Koa();
   app.use(logger(payload));
   app.use((ctx) => {
     ctx.body = 'dingding';
   });
-};
 
-test.beforeEach(() => {
-  app = new Koa();
-});
-test.afterEach(() => {
-  app = null;
-  server = null;
-});
+  return app.listen();
+};
 
 test('successful required logger', (t) => {
   t.truthy(logger);
 });
 
 test('successful create default middleware', async (t) => {
-  useLogger();
-  const { text } = await request().get('/').expect(200);
-  t.truthy(text, 'should get a body');
+  const app = useLogger();
+  const { text } = await request(app).get('/').expect(200);
+
   t.is(text, 'dingding', 'should get dingding as text');
+});
+
+test('successful use custom transport', async (t) => {
+  const msgs = [];
+  const app = useLogger({
+    transports: [new CustomTransport(msgs)],
+  });
+  await request(app).get('/').expect(200);
+
+  t.is(msgs.length, 1, 'should record 1 msg');
 });
