@@ -1,7 +1,9 @@
+/* eslint no-param-reassign: 0 */
 const winston = require('winston');
 const get = require('lodash.get');
 const set = require('lodash.set');
 const unset = require('lodash.unset');
+const onFinished = require('on-finished');
 const { format } = require('util');
 
 /**
@@ -165,6 +167,17 @@ exports.serializer = {
   },
 };
 
+exports.getLogLevel = (statusCode = 200, defaultLevel = 'info') => {
+  switch (parseInt(statusCode / 100, 10)) {
+    case 5:
+      return 'error';
+    case 4:
+      return 'warn';
+    default:
+      return defaultLevel;
+  }
+};
+
 exports.logger = (payload = {}) => {
   const {
     transports = [new winston.transports.Console({ json: true })],
@@ -172,11 +185,21 @@ exports.logger = (payload = {}) => {
     msg = 'HTTP %s %s',
   } = payload;
 
-  const logger = payload.logger || new winston.Logger({
-    transports,
-  });
+  const logger =
+    payload.logger ||
+    new winston.Logger({
+      transports,
+    });
   const reqSerializer = exports.serializer.req(payload);
   const resSerializer = exports.serializer.res(payload);
+
+  const onResponseFinished = (ctx, loggerMsg, meta) => {
+    meta.res = resSerializer(ctx.response);
+    meta.duration = Date.now() - meta.started_at;
+
+    const logLevel = exports.getLogLevel(meta.res.status, level);
+    logger[logLevel](loggerMsg, meta);
+  };
 
   return async (ctx, next) => {
     const meta = {
@@ -185,10 +208,18 @@ exports.logger = (payload = {}) => {
     };
     const loggerMsg = format(msg, meta.req.method, meta.req.url);
 
-    await next();
+    let error;
+    try {
+      await next();
+    } catch (e) {
+      // catch and throw it later
+      error = e;
+    } finally {
+      onFinished(ctx.response, onResponseFinished.bind(null, ctx, loggerMsg, meta));
+    }
 
-    meta.res = resSerializer(ctx.response);
-    meta.duration = Date.now() - meta.started_at;
-    logger[level](loggerMsg, meta);
+    if (error) {
+      throw error;
+    }
   };
 };
