@@ -138,13 +138,28 @@ exports.keysRecorder = (payload = {}) => {
 exports.serializer = {
   req: (payload) => {
     const {
-      reqIgnores = ['headers.cookie'],
+      reqUnselect = ['headers.cookie'],
+      reqSelect = [],
       reqKeys = ['headers', 'url', 'method', 'httpVersion', 'href', 'query', 'length'],
     } = payload;
 
     return exports.keysRecorder({
       defaults: reqKeys,
-      unselects: reqIgnores,
+      selects: reqSelect,
+      unselects: reqUnselect,
+    });
+  },
+  res: (payload) => {
+    const {
+      resUnselect = [],
+      resSelect = [],
+      resKeys = ['headers', 'status'],
+    } = payload;
+
+    return exports.keysRecorder({
+      defaults: resKeys,
+      selects: resSelect,
+      unselects: resUnselect,
     });
   },
 };
@@ -159,6 +174,7 @@ exports.logger = (payload = {}) => {
     transports,
   });
   const reqSerializer = exports.serializer.req(payload);
+  const resSerializer = exports.serializer.res(payload);
 
   return async (ctx, next) => {
     const meta = {
@@ -170,6 +186,7 @@ exports.logger = (payload = {}) => {
 
     await next();
 
+    meta.res = resSerializer(ctx.response);
     logger[level](msg, meta);
   };
 };
