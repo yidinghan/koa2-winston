@@ -48,4 +48,12 @@ test('successful use custom transport', async (t) => {
   await request(app).get('/').expect(200);
 
   t.is(msgs.length, 1, 'should record 1 msg');
+
+  const [{ level, msg, meta }] = msgs;
+  t.is(level, 'info');
+  t.is(msg, 'HTTP GET /');
+  t.is(Object.keys(meta).length, 4);
+  ['req', 'res', 'duration', 'started_at'].forEach((key) => {
+    t.true(Object.keys(meta).includes(key));
+  });
 });
