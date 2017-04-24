@@ -2,7 +2,6 @@ const winston = require('winston');
 const get = require('lodash.get');
 const set = require('lodash.set');
 const unset = require('lodash.unset');
-const pick = require('lodash.pick');
 
 /**
  * keysRecorder
@@ -82,15 +81,13 @@ exports.serializer = {
   req: (payload) => {
     const {
       reqIgnores = ['headers.cookie'],
-      reqkeys = ['headers', 'url', 'method', 'httpVersion', 'originalUrl', 'query'],
+      reqKeys = ['headers', 'url', 'method', 'httpVersion', 'originalUrl', 'query'],
     } = payload;
 
-    return (req) => {
-      const logObject = pick(req, reqkeys);
-      reqIgnores.forEach(unset.bind(unset, logObject));
-
-      return logObject;
-    };
+    return exports.keysRecorder({
+      defaults: reqKeys,
+      unselects: reqIgnores,
+    });
   },
 };
 
