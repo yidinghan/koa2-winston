@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.6.1"></a>
+## [1.6.1](https://github.com/yidinghan/koa2-winston/compare/v1.6.0...v1.6.1) (2017-04-25)
+
+
+### Features
+
+* **logger:** default console transport print single-line output ([f3715ed](https://github.com/yidinghan/koa2-winston/commit/f3715ed))
+
+
+
 <a name="1.6.0"></a>
 # [1.6.0](https://github.com/yidinghan/koa2-winston/compare/v1.5.0...v1.6.0) (2017-04-24)
 
