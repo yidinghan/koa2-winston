@@ -180,7 +180,7 @@ exports.getLogLevel = (statusCode = 200, defaultLevel = 'info') => {
 
 exports.logger = (payload = {}) => {
   const {
-    transports = [new winston.transports.Console({ json: true })],
+    transports = [new winston.transports.Console({ json: true, stringify: true })],
     level = 'info',
     msg = 'HTTP %s %s',
   } = payload;
