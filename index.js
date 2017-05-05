@@ -123,11 +123,12 @@ exports.keysRecorder = (payload = {}) => {
     unselects = [],
   } = payload;
 
+  const finalSelects = defaults.concat(selects);
   return (target) => {
     if (!target) { return {}; }
 
     const logObject = {};
-    defaults.concat(selects).forEach((path) => {
+    finalSelects.forEach((path) => {
       set(logObject, path, get(target, path));
     });
     unselects.forEach((path) => {
