@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.6.2"></a>
+## [1.6.2](https://github.com/yidinghan/koa2-winston/compare/v1.6.1...v1.6.2) (2017-05-05)
+
+
+### Performance Improvements
+
+* **key recorder:** concat first ([e8acd4c](https://github.com/yidinghan/koa2-winston/commit/e8acd4c))
+
+
+
 <a name="1.6.1"></a>
 ## [1.6.1](https://github.com/yidinghan/koa2-winston/compare/v1.6.0...v1.6.1) (2017-04-25)
 
