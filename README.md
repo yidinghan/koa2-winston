@@ -76,7 +76,7 @@ request log will look like
 
 ## Configuration
 
-Every params got an default value, you can customised your our logger by change the configuration
+Each parameter has a default value, and you can customize your logger by changing the configuration
 
 ```js
 app.use(logger({
