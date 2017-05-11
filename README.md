@@ -17,6 +17,10 @@ koa2 version winston logger like express-winston
   - [Quick Start](#quick-start)
   - [Configuration](#configuration)
   - [Examples](#examples)
+    - [Do not record any request fields](#do-not-record-any-request-fields)
+    - [Do not record any response fields](#do-not-record-any-response-fields)
+    - [Do not record UA](#do-not-record-ua)
+    - [Record a response body filed](#record-a-response-body-filed)
 - [JSDoc](#jsdoc)
   - [keysRecorder](#keysrecorder)
   - [logger](#logger)
@@ -36,32 +40,35 @@ npm i --save koa2-winston
 ```js
 const { logger } = require('koa2-winston');
 app.use(logger());
-// request loggeh will look like 
-// {
-//   "req": {
-//     "headers": {
-//       "host": "127.0.0.1:59534",
-//       "accept-encoding": "gzip, deflate",
-//       "user-agent": "node-superagent/3.5.2",
-//       "connection": "close"
-//     },
-//     "url": "/",
-//     "method": "GET",
-//     "href": "http://127.0.0.1:59534/",
-//     "query": {}
-//   },
-//   "started_at": 1494486039864,
-//   "res": {
-//     "headers": {
-//       "content-type": "text/plain; charset=utf-8",
-//       "content-length": "8"
-//     },
-//     "status": 200
-//   },
-//   "duration": 26,
-//   "level": "info",
-//   "message": "HTTP GET /"
-// }
+```
+
+request loggeh will look like 
+```json
+{
+  "req": {
+    "headers": {
+      "host": "127.0.0.1:59534",
+      "accept-encoding": "gzip, deflate",
+      "user-agent": "node-superagent/3.5.2",
+      "connection": "close"
+    },
+    "url": "/",
+    "method": "GET",
+    "href": "http://127.0.0.1:59534/",
+    "query": {}
+  },
+  "started_at": 1494486039864,
+  "res": {
+    "headers": {
+      "content-type": "text/plain; charset=utf-8",
+      "content-length": "8"
+    },
+    "status": 200
+  },
+  "duration": 26,
+  "level": "info",
+  "message": "HTTP GET /"
+}
 ```
 
 ## Configuration
@@ -85,80 +92,143 @@ Many configuration explain can be found in [logger](#logger)
 
 ## Examples
 
+### Do not record any request fields
+
 ```js
 app.use(logger({
   reqKeys: []
 }));
-// request logger look like down here
-// {
-//   "req": {
-//   },
-//   "started_at": 1494486039864,
-//   "res": {
-//     "headers": {
-//       "content-type": "text/plain; charset=utf-8",
-//       "content-length": "8"
-//     },
-//     "status": 200
-//   },
-//   "duration": 26,
-//   "level": "info",
-//   "message": "HTTP GET /"
-// }
+```
 
+The req object will be empty
+
+```json
+{
+  "req": {
+  },
+  "started_at": 1494486039864,
+  "res": {
+    "headers": {
+      "content-type": "text/plain; charset=utf-8",
+      "content-length": "8"
+    },
+    "status": 200
+  },
+  "duration": 26,
+  "level": "info",
+  "message": "HTTP GET /"
+}
+```
+
+### Do not record any response fields
+```js
 app.use(logger({
-  reqKeys: []
+  resKeys: []
 }));
-// {
-//   "req": {
-//     "headers": {
-//       "host": "127.0.0.1:59534",
-//       "accept-encoding": "gzip, deflate",
-//       "user-agent": "node-superagent/3.5.2",
-//       "connection": "close"
-//     },
-//     "url": "/",
-//     "method": "GET",
-//     "href": "http://127.0.0.1:59534/",
-//     "query": {}
-//   },
-//   "started_at": 1494486039864,
-//   "res": {
-//   },
-//   "duration": 26,
-//   "level": "info",
-//   "message": "HTTP GET /"
-// }
+```
 
+The res object will be empty
+```json
+{
+  "req": {
+    "headers": {
+      "host": "127.0.0.1:59534",
+      "accept-encoding": "gzip, deflate",
+      "user-agent": "node-superagent/3.5.2",
+      "connection": "close"
+    },
+    "url": "/",
+    "method": "GET",
+    "href": "http://127.0.0.1:59534/",
+    "query": {}
+  },
+  "started_at": 1494486039864,
+  "res": {
+  },
+  "duration": 26,
+  "level": "info",
+  "message": "HTTP GET /"
+}
+```
+
+### Do not record UA
+
+```js
 app.use(logger({
   reqUnselect: ['headers.cookies', 'headers.user-agent']
 }));
-// request loggeh will look like 
-// {
-//   "req": {
-//     "headers": {
-//       "host": "127.0.0.1:59534",
-//       "accept-encoding": "gzip, deflate",
-//       "connection": "close"
-//     },
-//     "url": "/",
-//     "method": "GET",
-//     "href": "http://127.0.0.1:59534/",
-//     "query": {}
-//   },
-//   "started_at": 1494486039864,
-//   "res": {
-//     "headers": {
-//       "content-type": "text/plain; charset=utf-8",
-//       "content-length": "8"
-//     },
-//     "status": 200
-//   },
-//   "duration": 26,
-//   "level": "info",
-//   "message": "HTTP GET /"
-// }
 ```
+
+The UA of request will be ignored
+
+```json
+{
+  "req": {
+    "headers": {
+      "host": "127.0.0.1:59534",
+      "accept-encoding": "gzip, deflate",
+      "connection": "close"
+    },
+    "url": "/",
+    "method": "GET",
+    "href": "http://127.0.0.1:59534/",
+    "query": {}
+  },
+  "started_at": 1494486039864,
+  "res": {
+    "headers": {
+      "content-type": "text/plain; charset=utf-8",
+      "content-length": "8"
+    },
+    "status": 200
+  },
+  "duration": 26,
+  "level": "info",
+  "message": "HTTP GET /"
+}
+```
+
+### Record a response body filed
+
+```js
+app.use(logger({
+  resSelect: ['body.success']
+}));
+```
+
+The `success` field on `body` will be recorded
+
+```json
+{
+  "req": {
+    "headers": {
+      "host": "127.0.0.1:59534",
+      "accept-encoding": "gzip, deflate",
+      "connection": "close"
+    },
+    "url": "/",
+    "method": "GET",
+    "href": "http://127.0.0.1:59534/",
+    "query": {}
+  },
+  "started_at": 1494486039864,
+  "res": {
+    "headers": {
+      "content-type": "text/plain; charset=utf-8",
+      "content-length": "8"
+    },
+    "status": 200,
+    "body": {
+      // Any possible value given by the server
+      "success": false
+    }
+  },
+  "duration": 26,
+  "level": "info",
+  "message": "HTTP GET /"
+}
+```
+
 
 # JSDoc
 
