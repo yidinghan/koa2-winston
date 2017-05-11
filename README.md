@@ -16,6 +16,7 @@ koa2 version winston logger like express-winston
   - [Installation](#installation)
   - [Quick Start](#quick-start)
   - [Configuration](#configuration)
+  - [Examples](#examples)
 - [JSDoc](#jsdoc)
   - [keysRecorder](#keysrecorder)
   - [logger](#logger)
@@ -80,7 +81,84 @@ app.use(logger({
 }));
 ```
 
-Many configuration examples can be found in [logger](#logger)
+Many configuration explain can be found in [logger](#logger)
+
+## Examples
+
+```js
+app.use(logger({
+  reqKeys: []
+}));
+// request logger look like down here
+// {
+//   "req": {
+//   },
+//   "started_at": 1494486039864,
+//   "res": {
+//     "headers": {
+//       "content-type": "text/plain; charset=utf-8",
+//       "content-length": "8"
+//     },
+//     "status": 200
+//   },
+//   "duration": 26,
+//   "level": "info",
+//   "message": "HTTP GET /"
+// }
+
+app.use(logger({
+  reqKeys: []
+}));
+// {
+//   "req": {
+//     "headers": {
+//       "host": "127.0.0.1:59534",
+//       "accept-encoding": "gzip, deflate",
+//       "user-agent": "node-superagent/3.5.2",
+//       "connection": "close"
+//     },
+//     "url": "/",
+//     "method": "GET",
+//     "href": "http://127.0.0.1:59534/",
+//     "query": {}
+//   },
+//   "started_at": 1494486039864,
+//   "res": {
+//   },
+//   "duration": 26,
+//   "level": "info",
+//   "message": "HTTP GET /"
+// }
+
+app.use(logger({
+  reqUnselect: ['headers.cookies', 'headers.user-agent']
+}));
+// request loggeh will look like 
+// {
+//   "req": {
+//     "headers": {
+//       "host": "127.0.0.1:59534",
+//       "accept-encoding": "gzip, deflate",
+//       "connection": "close"
+//     },
+//     "url": "/",
+//     "method": "GET",
+//     "href": "http://127.0.0.1:59534/",
+//     "query": {}
+//   },
+//   "started_at": 1494486039864,
+//   "res": {
+//     "headers": {
+//       "content-type": "text/plain; charset=utf-8",
+//       "content-length": "8"
+//     },
+//     "status": 200
+//   },
+//   "duration": 26,
+//   "level": "info",
+//   "message": "HTTP GET /"
+// }
+```
 
 # JSDoc
 
