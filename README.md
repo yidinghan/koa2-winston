@@ -11,12 +11,74 @@ koa2 version winston logger like express-winston
 
 <!-- TOC -->
 
--   [koa2-winston](#koa2-winston)
--   [JSDoc](#jsdoc)
-    -   [keysRecorder](#keysrecorder)
-    -   [logger](#logger)
+- [koa2-winston](#koa2-winston)
+- [Usage](#usage)
+  - [Installation](#installation)
+  - [Quick Start](#quick-start)
+  - [Configuration](#configuration)
+- [JSDoc](#jsdoc)
+  - [keysRecorder](#keysrecorder)
+  - [logger](#logger)
 
 <!-- /TOC -->
+
+# Usage
+
+## Installation
+
+```shell
+npm i --save koa2-winston
+```
+
+## Quick Start
+
+```js
+const { logger } = require('koa2-winston');
+app.use(logger());
+// request loggeh will look like 
+// {
+//   "req": {
+//     "headers": {
+//       "host": "127.0.0.1:59534",
+//       "accept-encoding": "gzip, deflate",
+//       "user-agent": "node-superagent/3.5.2",
+//       "connection": "close"
+//     },
+//     "url": "/",
+//     "method": "GET",
+//     "href": "http://127.0.0.1:59534/",
+//     "query": {}
+//   },
+//   "started_at": 1494486039864,
+//   "res": {
+//     "headers": {
+//       "content-type": "text/plain; charset=utf-8",
+//       "content-length": "8"
+//     },
+//     "status": 200
+//   },
+//   "duration": 26,
+//   "level": "info",
+//   "message": "HTTP GET /"
+// }
+```
+
+## Configuration
+
+Every params got an default value, you can customised your our logger by change the configuration
+
+```js
+app.use(logger({
+  transports: new winston.transports.Console({ json: true, stringify: true }),
+  level: 'info',
+  reqKeys: ['headers','url','method', 'httpVersion','href','query','length'],
+  reqSelect: [],
+  reqUnselect: ['headers.cookie'],
+  resKeys: ['headers','status'],
+  resSelect: [],
+  resUnselect: [],
+}));
+```
 
 # JSDoc
 
