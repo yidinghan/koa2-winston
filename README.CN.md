@@ -7,45 +7,42 @@
 [![David](https://img.shields.io/david/yidinghan/koa2-winston.svg?style=flat-square)](<>)
 [![David](https://img.shields.io/david/dev/yidinghan/koa2-winston.svg?style=flat-square)](<>)
 
-koa2 version winston logger like [express-winston](https://github.com/bithavoc/express-winston)
-
-[中文介绍](https://github.com/yidinghan/koa2-winston/blob/master/README.CN.md)
+koa2 版本的 winston logger, 和 [express-winston](https://github.com/bithavoc/express-winston) 类似
 
 <!-- TOC -->
 
 - [koa2-winston](#koa2-winston)
-- [Usage](#usage)
-  - [Installation](#installation)
-  - [Quick Start](#quick-start)
-  - [Configuration](#configuration)
-  - [Examples](#examples)
-    - [Do not record any request fields](#do-not-record-any-request-fields)
-    - [Do not record any response fields](#do-not-record-any-response-fields)
-    - [Do not record UA](#do-not-record-ua)
-    - [Record a response body filed](#record-a-response-body-filed)
+- [用法](#用法)
+  - [安装](#安装)
+  - [快速开始](#快速开始)
+  - [配置](#配置)
+  - [例子](#例子)
+    - [不记录任何请求内容](#不记录任何请求内容)
+    - [不记录任何响应内容](#不记录任何响应内容)
+    - [不记录 UA](#不记录-ua)
+    - [额外记录一个响应的字段](#额外记录一个响应的字段)
 - [JSDoc](#jsdoc)
   - [keysRecorder](#keysrecorder)
   - [logger](#logger)
 
 <!-- /TOC -->
 
-# Usage
+# 用法
 
-## Installation
+## 安装
 
 ```shell
 npm i --save koa2-winston
 ```
 
-## Quick Start
+## 快速开始
 
 ```js
 const { logger } = require('koa2-winston');
 app.use(logger());
 ```
 
-request log will look like 
-
+访问的日志将会如下出现
 ```json
 {
   "req": {
@@ -74,9 +71,9 @@ request log will look like
 }
 ```
 
-## Configuration
+## 配置
 
-Every params got an default value, you can customised your our logger by change the configuration
+每一个变量都有一个默认值，你可以通过配置不同的变量自定义你的日志记录器
 
 ```js
 app.use(logger({
@@ -91,11 +88,11 @@ app.use(logger({
 }));
 ```
 
-Many configuration explain can be found in [logger](#logger)
+更多配置解析，可以在[logger](#logger)中查看
 
-## Examples
+## 例子
 
-### Do not record any request fields
+### 不记录任何请求内容
 
 ```js
 app.use(logger({
@@ -103,7 +100,7 @@ app.use(logger({
 }));
 ```
 
-The req object will be empty
+`req` 对象将会为空
 
 ```json
 {
@@ -123,14 +120,15 @@ The req object will be empty
 }
 ```
 
-### Do not record any response fields
+### 不记录任何响应内容
 ```js
 app.use(logger({
   resKeys: []
 }));
 ```
 
-The res object will be empty
+`res` 对象将会为空
+
 ```json
 {
   "req": {
@@ -154,7 +152,7 @@ The res object will be empty
 }
 ```
 
-### Do not record UA
+### 不记录 UA
 
 ```js
 app.use(logger({
@@ -162,7 +160,7 @@ app.use(logger({
 }));
 ```
 
-The UA of request will be ignored
+请求的 UA 将会被忽略
 
 ```json
 {
@@ -191,7 +189,7 @@ The UA of request will be ignored
 }
 ```
 
-### Record a response body filed
+### 额外记录一个响应的字段
 
 ```js
 app.use(logger({
@@ -199,7 +197,7 @@ app.use(logger({
 }));
 ```
 
-The `success` field on `body` will be recorded
+`body` 里面的 `success` 字段将会被记录
 
 ```json
 {
@@ -222,7 +220,7 @@ The `success` field on `body` will be recorded
     },
     "status": 200,
     "body": {
-      // Any possible value given by the server
+      // 会记录下任何服务器响应的值
       "success": false
     }
   },
@@ -231,7 +229,6 @@ The `success` field on `body` will be recorded
   "message": "HTTP GET /"
 }
 ```
-
 
 # JSDoc
 
