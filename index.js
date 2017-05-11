@@ -124,19 +124,47 @@ exports.getLogLevel = (statusCode = 200, defaultLevel = 'info') => {
 /**
  * logger middleware for koa2 use winston
  *
- * @param {object} [payload] - input arguments
+ * @param {object} [payload={}] - input arguments
  * @param {object[]} [payload.transports=winston.transports.Console] - winston transports instance
- * @param {string} [payload.level=info] - default log level of logger
- * @param {string} [payload.reqKeys] - default request fields to be logged
- * @param {string} [payload.reqSelect] - additional request fields to be logged
+ * @param {string} [payload.level='info'] - default log level of logger
+ * @param {string} [payload.reqKeys=['headers', 'url', 'method',
+ *                  'httpVersion', 'href', 'query', 'length']] - default request fields to be logged
+ * @param {string} [payload.reqSelect=[]] - additional request fields to be logged
  * @param {string} [payload.reqUnselect=['headers.cookie']] - request field
  *                  will be removed from the log
- * @param {string} [payload.resKeys] - default response fields to be logged
- * @param {string} [payload.resSelect] - additional response fields to be logged
- * @param {string} [payload.resUnselect] - response field will be removed from the log
+ * @param {string} [payload.resKeys=['headers', 'status']] - default response fields to be logged
+ * @param {string} [payload.resSelect=[]] - additional response fields to be logged
+ * @param {string} [payload.resUnselect=[]] - response field will be removed from the log
  * @return {function} logger middleware
  * @example
  * const { logger } = require('koa2-winston');
+ * app.use(logger());
+ * // request logger look like down here
+ * // {
+ * //   "req": {
+ * //     "headers": {
+ * //       "host": "127.0.0.1:59534",
+ * //       "accept-encoding": "gzip, deflate",
+ * //       "user-agent": "node-superagent/3.5.2",
+ * //       "connection": "close"
+ * //     },
+ * //     "url": "/",
+ * //     "method": "GET",
+ * //     "href": "http://127.0.0.1:59534/",
+ * //     "query": {}
+ * //   },
+ * //   "started_at": 1494486039864,
+ * //   "res": {
+ * //     "headers": {
+ * //       "content-type": "text/plain; charset=utf-8",
+ * //       "content-length": "8"
+ * //     },
+ * //     "status": 200
+ * //   },
+ * //   "duration": 26,
+ * //   "level": "info",
+ * //   "message": "HTTP GET /"
+ * // }
  */
 exports.logger = (payload = {}) => {
   const {

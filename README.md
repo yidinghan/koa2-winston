@@ -11,10 +11,10 @@ koa2 version winston logger like express-winston
 
 <!-- TOC -->
 
-- [koa2-winston](#koa2-winston)
-- [JSDoc](#jsdoc)
-  - [keysRecorder](#keysrecorder)
-  - [logger](#logger)
+-   [koa2-winston](#koa2-winston)
+-   [JSDoc](#jsdoc)
+    -   [keysRecorder](#keysrecorder)
+    -   [logger](#logger)
 
 <!-- /TOC -->
 
@@ -89,12 +89,48 @@ logger middleware for koa2 use winston
 **Parameters**
 
 -   `payload` **[object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** input arguments (optional, default `{}`)
-    -   `payload.transports` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)>** winston transports instance
+    -   `payload.transports` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)>** winston transports instance (optional, default `winston.transports.Console`)
+    -   `payload.level` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** default log level of logger (optional, default `'info'`)
+    -   `payload.reqKeys` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** default request fields to be logged (optional, default `['headers','url','method',
+        'httpVersion','href','query','length']`)
+    -   `payload.reqSelect` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** additional request fields to be logged (optional, default `[]`)
+    -   `payload.reqUnselect` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** request field
+                         will be removed from the log (optional, default `['headers.cookie']`)
+    -   `payload.resKeys` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** default response fields to be logged (optional, default `['headers','status']`)
+    -   `payload.resSelect` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** additional response fields to be logged (optional, default `[]`)
+    -   `payload.resUnselect` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** response field will be removed from the log (optional, default `[]`)
 
 **Examples**
 
 ```javascript
 const { logger } = require('koa2-winston');
+app.use(logger());
+// trrific logger look like down here
+// {
+//   "req": {
+//     "headers": {
+//       "host": "127.0.0.1:59534",
+//       "accept-encoding": "gzip, deflate",
+//       "user-agent": "node-superagent/3.5.2",
+//       "connection": "close"
+//     },
+//     "url": "/",
+//     "method": "GET",
+//     "href": "http://127.0.0.1:59534/",
+//     "query": {}
+//   },
+//   "started_at": 1494486039864,
+//   "res": {
+//     "headers": {
+//       "content-type": "text/plain; charset=utf-8",
+//       "content-length": "8"
+//     },
+//     "status": 200
+//   },
+//   "duration": 26,
+//   "level": "info",
+//   "message": "HTTP GET /"
+// }
 ```
 
 Returns **[function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)** logger middleware
