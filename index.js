@@ -124,8 +124,16 @@ exports.getLogLevel = (statusCode = 200, defaultLevel = 'info') => {
 /**
  * logger middleware for koa2 use winston
  *
- * @param {object} payload - input arguments
- * @param {object[]} payload.transports - winston transports instance
+ * @param {object} [payload] - input arguments
+ * @param {object[]} [payload.transports=winston.transports.Console] - winston transports instance
+ * @param {string} [payload.level=info] - default log level of logger
+ * @param {string} [payload.reqKeys] - default request fields to be logged
+ * @param {string} [payload.reqSelect] - additional request fields to be logged
+ * @param {string} [payload.reqUnselect=['headers.cookie']] - request field
+ *                  will be removed from the log
+ * @param {string} [payload.resKeys] - default response fields to be logged
+ * @param {string} [payload.resSelect] - additional response fields to be logged
+ * @param {string} [payload.resUnselect] - response field will be removed from the log
  * @return {function} logger middleware
  * @example
  * const { logger } = require('koa2-winston');
