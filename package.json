@@ -7,6 +7,7 @@
     "node": ">=7.6"
   },
   "scripts": {
+    "doc": "documentation readme index.js --section=JSDoc",
     "lint": "eslint ./test/*.js ./index.js --fix",
     "release": "standard-version",
     "nyc": "nyc npm test && nyc report --reporter=html",
