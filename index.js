@@ -121,6 +121,15 @@ exports.getLogLevel = (statusCode = 200, defaultLevel = 'info') => {
   }
 };
 
+/**
+ * logger middleware for koa2 use winston
+ *
+ * @param {object} payload - input arguments
+ * @param {object[]} payload.transports - winston transports instance
+ * @return {function} logger middleware
+ * @example
+ * const { logger } = require('koa2-winston');
+ */
 exports.logger = (payload = {}) => {
   const {
     transports = [new winston.transports.Console({ json: true, stringify: true })],

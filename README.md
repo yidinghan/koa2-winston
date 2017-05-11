@@ -14,6 +14,7 @@ koa2 version winston logger like express-winston
 - [koa2-winston](#koa2-winston)
 - [JSDoc](#jsdoc)
   - [keysRecorder](#keysrecorder)
+  - [logger](#logger)
 
 <!-- /TOC -->
 
@@ -80,3 +81,20 @@ recorder({
 ```
 
 Returns **[function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)** closure function, setting by given payload
+
+## logger
+
+logger middleware for koa2 use winston
+
+**Parameters**
+
+-   `payload` **[object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** input arguments (optional, default `{}`)
+    -   `payload.transports` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)>** winston transports instance
+
+**Examples**
+
+```javascript
+const { logger } = require('koa2-winston');
+```
+
+Returns **[function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)** logger middleware
