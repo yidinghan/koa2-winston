@@ -50,27 +50,31 @@ request log will look like
 {
   "req": {
     "headers": {
-      "host": "127.0.0.1:59534",
-      "accept-encoding": "gzip, deflate",
-      "user-agent": "node-superagent/3.5.2",
-      "connection": "close"
+      "host": "localhost:3000",
+      "connection": "keep-alive",
+      "upgrade-insecure-requests": "1",
+      "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36",
+      "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+      "dnt": "1",
+      "accept-encoding": "gzip, deflate, sdch, br",
+      "accept-language": "zh-CN,zh;q=0.8,en;q=0.6,zh-TW;q=0.4,de;q=0.2,ja;q=0.2,it;q=0.2"
     },
-    "url": "/",
+    "url": "/hello",
     "method": "GET",
-    "href": "http://127.0.0.1:59534/",
+    "href": "http://localhost:3000/hello",
     "query": {}
   },
-  "started_at": 1494486039864,
+  "started_at": 1494554053492,
   "res": {
     "headers": {
-      "content-type": "text/plain; charset=utf-8",
-      "content-length": "8"
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "16"
     },
     "status": 200
   },
-  "duration": 26,
+  "duration": 8,
   "level": "info",
-  "message": "HTTP GET /"
+  "message": "HTTP GET /hello"
 }
 ```
 
