@@ -9,6 +9,8 @@
 
 koa2 version winston logger like [express-winston](https://github.com/bithavoc/express-winston)
 
+Add logger to your koa2 server in 3 lines
+
 [中文介绍](https://github.com/yidinghan/koa2-winston/blob/master/README.CN.md)
 
 <!-- TOC -->

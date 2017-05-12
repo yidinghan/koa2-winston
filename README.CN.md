@@ -9,6 +9,8 @@
 
 koa2 版本的 winston logger, 和 [express-winston](https://github.com/bithavoc/express-winston) 类似
 
+在3行内将logger添加到koa2服务器
+
 <!-- TOC -->
 
 - [koa2-winston](#koa2-winston)
