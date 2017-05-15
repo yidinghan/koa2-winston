@@ -1,11 +1,12 @@
 # koa2-winston
 
-[![Travis](https://img.shields.io/travis/yidinghan/koa2-winston.svg?style=flat-square)](<>)
-[![npm](https://img.shields.io/npm/l/koa2-winston.svg?style=flat-square)](<>)
-[![npm](https://img.shields.io/npm/v/koa2-winston.svg?style=flat-square)](<>)
-[![npm](https://img.shields.io/npm/dm/koa2-winston.svg?style=flat-square)](<>)
-[![David](https://img.shields.io/david/yidinghan/koa2-winston.svg?style=flat-square)](<>)
-[![David](https://img.shields.io/david/dev/yidinghan/koa2-winston.svg?style=flat-square)](<>)
+[![Travis](https://img.shields.io/travis/yidinghan/koa2-winston.svg?style=flat-square)](https://www.npmjs.com/package/koa2-winston)
+[![npm](https://img.shields.io/npm/l/koa2-winston.svg?style=flat-square)](https://www.npmjs.com/package/koa2-winston)
+[![npm](https://img.shields.io/npm/v/koa2-winston.svg?style=flat-square)](https://www.npmjs.com/package/koa2-winston)
+[![npm](https://img.shields.io/npm/dm/koa2-winston.svg?style=flat-square)](https://www.npmjs.com/package/koa2-winston)
+[![David](https://img.shields.io/david/yidinghan/koa2-winston.svg?style=flat-square)](https://www.npmjs.com/package/koa2-winston)
+[![David](https://img.shields.io/david/dev/yidinghan/koa2-winston.svg?style=flat-square)](https://www.npmjs.com/package/koa2-winston)
+[![node](https://img.shields.io/node/v/koa2-winston.svg?style=flat-square)](https://www.npmjs.com/package/koa2-winston)
 
 koa2 version winston logger like [express-winston](https://github.com/bithavoc/express-winston)
 
