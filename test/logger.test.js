@@ -30,6 +30,26 @@ const useLogger = (payload, handler = defaultHandler) => {
   return app.listen();
 };
 
+test('cookies should still exists', async (t) => {
+  const msgs = [];
+  let cookie = '';
+  const cookieHanler = (ctx) => {
+    cookie = ctx.headers.cookie;
+    ctx.body = 'dingding';
+  };
+  const app = useLogger(
+    {
+      transports: [new CustomTransport(msgs)],
+    },
+    cookieHanler,
+  );
+  await request(app).post('/test').set('Cookie', 'ding=ding').expect(200);
+
+  const [{ level }] = msgs;
+  t.is(level, 'info');
+  t.is(cookie, 'ding=ding', 'should be request cookie');
+});
+
 test('successful required logger', (t) => {
   t.truthy(logger);
 });
@@ -87,9 +107,12 @@ test('should still record logger when error have been throw out', async (t) => {
   const errorHandler = (ctx) => {
     ctx.throw('test');
   };
-  const app = useLogger({
-    transports: [new CustomTransport(msgs)],
-  }, errorHandler);
+  const app = useLogger(
+    {
+      transports: [new CustomTransport(msgs)],
+    },
+    errorHandler,
+  );
   await request(app).post('/test').expect(500);
 
   const [{ level }] = msgs;
