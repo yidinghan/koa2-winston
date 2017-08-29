@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.6.5"></a>
+## [1.6.5](https://github.com/yidinghan/koa2-winston/compare/v1.6.4...v1.6.5) (2017-08-29)
+
+
+### Bug Fixes
+
+* rm error arguments ([0fc1c5b](https://github.com/yidinghan/koa2-winston/commit/0fc1c5b))
+* use copy logObject when unset properties ([78bee31](https://github.com/yidinghan/koa2-winston/commit/78bee31))
+
+
+
 <a name="1.6.4"></a>
 ## [1.6.4](https://github.com/yidinghan/koa2-winston/compare/v1.6.3...v1.6.4) (2017-05-11)
 
