@@ -13,7 +13,13 @@ const bench = new Benchmark('middleware', {
   async fn(deferred) {
     const event = new EventEmitter();
     await middleware({
-      request: {},
+      request: {
+        method: 'get',
+        url: '/ding',
+        headers: {
+          cookie: 'ding',
+        },
+      },
       response: event,
     }, () => event.emit('end'));
     deferred.resolve();
