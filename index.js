@@ -7,6 +7,24 @@ const onFinished = require('on-finished');
 const { format } = require('util');
 
 /**
+ * clone object
+ *
+ * @param {*} obj
+ */
+const clone = (obj) => {
+  if (obj === undefined || obj === null || ({}).toString.call({}) !== '[object Object]') {
+    return obj;
+  }
+
+  const copycat = {};
+  Object.entries(obj).forEach(([key, val]) => {
+    copycat[key] = clone(val);
+  });
+
+  return copycat;
+};
+
+/**
  * keysRecorder
  * use ldoash pick, get and set to collect data from given target object
  *
@@ -74,7 +92,7 @@ exports.keysRecorder = (payload = {}) => {
       set(logObject, path, get(target, path));
     });
     if (unselects.length) {
-      logObject = JSON.parse(JSON.stringify(logObject));
+      logObject = clone(logObject);
       unselects.forEach((path) => {
         unset(logObject, path);
       });
