@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.7.0"></a>
+# [1.7.0](https://github.com/yidinghan/koa2-winston/compare/v1.6.5...v1.7.0) (2017-08-29)
+
+
+### Bug Fixes
+
+* **clone:** error params on tostring ([f60033f](https://github.com/yidinghan/koa2-winston/commit/f60033f))
+
+
+### Features
+
+* **clone:** use entries to clone object ([68f91ef](https://github.com/yidinghan/koa2-winston/commit/68f91ef))
+
+
+
 <a name="1.6.5"></a>
 ## [1.6.5](https://github.com/yidinghan/koa2-winston/compare/v1.6.4...v1.6.5) (2017-08-29)
 
