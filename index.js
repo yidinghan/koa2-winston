@@ -69,13 +69,16 @@ exports.keysRecorder = (payload = {}) => {
   return (target) => {
     if (!target) { return {}; }
 
-    const logObject = {};
+    let logObject = {};
     finalSelects.forEach((path) => {
       set(logObject, path, get(target, path));
     });
-    unselects.forEach((path) => {
-      unset(logObject, path);
-    });
+    if (unselects.length) {
+      logObject = JSON.parse(JSON.stringify(logObject));
+      unselects.forEach((path) => {
+        unset(logObject, path);
+      });
+    }
 
     return logObject;
   };
