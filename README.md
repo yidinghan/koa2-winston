@@ -244,11 +244,11 @@ The `success` field on `body` will be recorded
 
 At node 8.2
 
-middleware x 80,848 ops/sec ±8.30% (17 runs sampled)
+middleware x 99,216 ops/sec ±9.55% (16 runs sampled)
 
 At node 8.4
 
-middleware x 107,464 ops/sec ±7.99% (19 runs sampled)
+middleware x 119,388 ops/sec ±3.85% (18 runs sampled)
 
 # JSDoc
 
