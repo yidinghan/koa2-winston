@@ -30,6 +30,23 @@ const useLogger = (payload, handler = defaultHandler) => {
   return app.listen();
 };
 
+test('log level should be warn', async (t) => {
+  const msgs = [];
+  const warnHanler = (ctx) => {
+    ctx.status = 400;
+  };
+  const app = useLogger(
+    {
+      transports: [new CustomTransport(msgs)],
+    },
+    warnHanler,
+  );
+  await request(app).post('/test').expect(400);
+
+  const [{ level }] = msgs;
+  t.is(level, 'warn');
+});
+
 test('cookies should still exists', async (t) => {
   const msgs = [];
   let cookie = '';
