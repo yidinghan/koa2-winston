@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.7.1"></a>
+## [1.7.1](https://github.com/yidinghan/koa2-winston/compare/v1.7.0...v1.7.1) (2017-08-29)
+
+
+### Performance Improvements
+
+* **clone:** less conditions ([f1379f7](https://github.com/yidinghan/koa2-winston/commit/f1379f7))
+
+
+
 <a name="1.7.0"></a>
 # [1.7.0](https://github.com/yidinghan/koa2-winston/compare/v1.6.5...v1.7.0) (2017-08-29)
 
