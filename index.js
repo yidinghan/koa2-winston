@@ -12,7 +12,7 @@ const { format } = require('util');
  * @param {*} obj
  */
 const clone = (obj) => {
-  if (obj === undefined || obj === null || ({}).toString.call({}) !== '[object Object]') {
+  if (obj === undefined || obj === null || ({}).toString.call(obj) !== '[object Object]') {
     return obj;
   }
 
