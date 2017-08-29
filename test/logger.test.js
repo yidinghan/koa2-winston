@@ -3,7 +3,7 @@ const Koa = require('koa');
 const winston = require('winston');
 const request = require('supertest');
 
-const { logger } = require('../index');
+const { logger, getLogLevel } = require('../index');
 
 class CustomTransport extends winston.Transport {
   constructor(msgs = []) {
@@ -30,7 +30,32 @@ const useLogger = (payload, handler = defaultHandler) => {
   return app.listen();
 };
 
-test('log level should be warn', async (t) => {
+test('log level should return ding as default level', async (t) => {
+  const level = getLogLevel(undefined, 'ding');
+  t.is(level, 'ding');
+});
+
+test('log level should return warn as default level', async (t) => {
+  const level = getLogLevel(undefined, 'warn');
+  t.is(level, 'warn');
+});
+
+test('log level should return warn', async (t) => {
+  const level = getLogLevel(400);
+  t.is(level, 'warn');
+});
+
+test('log level should return error', async (t) => {
+  const level = getLogLevel(500);
+  t.is(level, 'error');
+});
+
+test('log level should use defautl value', async (t) => {
+  const level = getLogLevel();
+  t.is(level, 'info');
+});
+
+test('log level should be warn when status=400', async (t) => {
   const msgs = [];
   const warnHanler = (ctx) => {
     ctx.status = 400;
