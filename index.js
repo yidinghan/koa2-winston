@@ -74,7 +74,7 @@ exports.keysRecorder = (payload = {}) => {
       set(logObject, path, get(target, path));
     });
     unselects.forEach((path) => {
-      unset(logObject, path, get(target, path));
+      unset(logObject, path);
     });
 
     return logObject;
