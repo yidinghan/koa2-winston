@@ -26,6 +26,7 @@ Add logger to your koa2 server in 3 lines
     - [Do not record any response fields](#do-not-record-any-response-fields)
     - [Do not record UA](#do-not-record-ua)
     - [Record a response body filed](#record-a-response-body-filed)
+- [Simple Benchmark](#simple-benchmark)
 - [JSDoc](#jsdoc)
   - [keysRecorder](#keysrecorder)
   - [logger](#logger)
@@ -239,6 +240,15 @@ The `success` field on `body` will be recorded
 }
 ```
 
+# Simple Benchmark
+
+At node 8.2
+
+middleware x 80,848 ops/sec ±8.30% (17 runs sampled)
+
+At node 8.4
+
+middleware x 107,464 ops/sec ±7.99% (19 runs sampled)
 
 # JSDoc
 

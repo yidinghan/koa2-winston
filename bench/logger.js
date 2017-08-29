@@ -23,3 +23,9 @@ const bench = new Benchmark('middleware', {
 bench.run();
 
 // middleware x 41,182 ops/sec ±4.19% (21 runs sampled)
+
+// node 8.2
+// middleware x 80,848 ops/sec ±8.30% (17 runs sampled)
+
+// node 8.4
+// middleware x 107,464 ops/sec ±7.99% (19 runs sampled)
