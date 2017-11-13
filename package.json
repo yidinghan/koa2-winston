@@ -40,15 +40,15 @@
     "on-finished": "^2.3.0"
   },
   "devDependencies": {
-    "ava": "^0.19.1",
+    "ava": "^0.23.0",
     "benchmark": "^2.1.4",
-    "documentation": "^4.0.0-rc.1",
-    "eslint": "^4.1.1",
-    "eslint-config-airbnb-base": "^11.2.0",
-    "eslint-plugin-import": "^2.6.0",
-    "koa": "^2.3.0",
-    "nyc": "^11.0.2",
+    "documentation": "^5.3.3",
+    "eslint": "^4.11.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.8.0",
+    "koa": "^2.4.1",
+    "nyc": "^11.3.0",
     "supertest": "^3.0.0",
-    "winston": "^2.3.1"
+    "winston": "^2.4.0"
   }
 }
