@@ -77,15 +77,13 @@ const clone = (obj) => {
  * }) // { foo: 1, foobar: { a: 3 } }
  */
 exports.keysRecorder = (payload = {}) => {
-  const {
-    defaults = [],
-    selects = [],
-    unselects = [],
-  } = payload;
+  const { defaults = [], selects = [], unselects = [] } = payload;
 
   const finalSelects = defaults.concat(selects);
   return (target) => {
-    if (!target) { return {}; }
+    if (!target) {
+      return {};
+    }
 
     let logObject = {};
     finalSelects.forEach((path) => {
@@ -107,7 +105,15 @@ exports.serializer = {
     const {
       reqUnselect = ['headers.cookie'],
       reqSelect = [],
-      reqKeys = ['headers', 'url', 'method', 'httpVersion', 'href', 'query', 'length'],
+      reqKeys = [
+        'headers',
+        'url',
+        'method',
+        'httpVersion',
+        'href',
+        'query',
+        'length',
+      ],
     } = payload;
 
     return exports.keysRecorder({
@@ -191,16 +197,14 @@ exports.getLogLevel = (statusCode = 200, defaultLevel = 'info') => {
  */
 exports.logger = (payload = {}) => {
   const {
-    transports = [new winston.transports.Console({ json: true, stringify: true })],
+    transports = [
+      new winston.transports.Console({ json: true, stringify: true }),
+    ],
     level = 'info',
     msg = 'HTTP %s %s',
   } = payload;
 
-  const logger =
-    payload.logger ||
-    new winston.Logger({
-      transports,
-    });
+  const logger = payload.logger || new winston.Logger({ transports });
   const reqSerializer = exports.serializer.req(payload);
   const resSerializer = exports.serializer.res(payload);
 
@@ -226,7 +230,10 @@ exports.logger = (payload = {}) => {
       // catch and throw it later
       error = e;
     } finally {
-      onFinished(ctx.response, onResponseFinished.bind(null, ctx, loggerMsg, meta));
+      onFinished(
+        ctx.response,
+        onResponseFinished.bind(null, ctx, loggerMsg, meta),
+      );
     }
 
     if (error) {

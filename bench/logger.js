@@ -35,3 +35,7 @@ bench.run();
 
 // node 8.4
 // middleware x 107,464 ops/sec ±7.99% (19 runs sampled)
+
+// node 8.10
+// with indexOf
+// middleware x 125,694 ops/sec ±2.72% (17 runs sampled)
