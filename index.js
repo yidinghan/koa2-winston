@@ -78,7 +78,7 @@ const clone = (obj) => {
  *   foobar: { a: 3, b: 4 }
  * }) // { foo: 1, foobar: { a: 3 } }
  */
-exports.keysRecorder = (payload = {}) => {
+const keysRecorder = (payload = {}) => {
   const { defaults = [], selects = [], unselects = [] } = payload;
 
   const finalSelects = defaults.concat(selects);
@@ -102,7 +102,7 @@ exports.keysRecorder = (payload = {}) => {
   };
 };
 
-exports.serializer = {
+const serializer = {
   req: (payload) => {
     const {
       reqUnselect = ['headers.cookie'],
@@ -118,7 +118,7 @@ exports.serializer = {
       ],
     } = payload;
 
-    return exports.keysRecorder({
+    return keysRecorder({
       defaults: reqKeys,
       selects: reqSelect,
       unselects: reqUnselect,
@@ -131,7 +131,7 @@ exports.serializer = {
       resKeys = ['headers', 'status'],
     } = payload;
 
-    return exports.keysRecorder({
+    return keysRecorder({
       defaults: resKeys,
       selects: resSelect,
       unselects: resUnselect,
@@ -139,7 +139,7 @@ exports.serializer = {
   },
 };
 
-exports.getLogLevel = (statusCode = 200, defaultLevel = 'info') => {
+const getLogLevel = (statusCode = 200, defaultLevel = 'info') => {
   switch (parseInt(statusCode / 100, 10)) {
     case 5:
       return 'error';
@@ -197,25 +197,23 @@ exports.getLogLevel = (statusCode = 200, defaultLevel = 'info') => {
  * //   "message": "HTTP GET /"
  * // }
  */
-exports.logger = (payload = {}) => {
+const logger = (payload = {}) => {
   const {
-    transports = [
-      new winston.transports.Console({ json: true, stringify }),
-    ],
+    transports = [new winston.transports.Console({ json: true, stringify })],
     level = 'info',
     msg = 'HTTP %s %s',
   } = payload;
 
-  const logger = payload.logger || new winston.Logger({ transports });
-  const reqSerializer = exports.serializer.req(payload);
-  const resSerializer = exports.serializer.res(payload);
+  const winstonLogger = payload.logger || new winston.Logger({ transports });
+  const reqSerializer = serializer.req(payload);
+  const resSerializer = serializer.res(payload);
 
   const onResponseFinished = (ctx, loggerMsg, meta) => {
     meta.res = resSerializer(ctx.response);
     meta.duration = Date.now() - meta.started_at;
 
-    const logLevel = exports.getLogLevel(meta.res.status, level);
-    logger[logLevel](loggerMsg, meta);
+    const logLevel = getLogLevel(meta.res.status, level);
+    winstonLogger[logLevel](loggerMsg, meta);
   };
 
   return async (ctx, next) => {
@@ -242,4 +240,11 @@ exports.logger = (payload = {}) => {
       throw error;
     }
   };
+};
+
+module.exports = {
+  logger,
+  keysRecorder,
+  serializer,
+  getLogLevel,
 };
