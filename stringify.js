@@ -4,18 +4,17 @@ const schema = {
   title: 'koa2 logger',
   type: 'object',
   properties: {
-    duration: {
-      type: 'integer',
+    started_at: { type: 'integer' },
+    duration: { type: 'integer' },
+    level: { type: 'string' },
+    message: { type: 'string' },
+    req: {
+      type: 'object',
+      additionalProperties: true,
     },
-    lastName: {
-      type: 'string',
-    },
-    age: {
-      description: 'Age in years',
-      type: 'integer',
-    },
-    reg: {
-      type: 'string',
+    res: {
+      type: 'object',
+      additionalProperties: true,
     },
   },
 };
