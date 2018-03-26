@@ -40,6 +40,7 @@
     "on-finished": "^2.3.0"
   },
   "devDependencies": {
+    "@types/node": "^9.6.0",
     "ava": "^0.23.0",
     "benchmark": "^2.1.4",
     "documentation": "^5.3.3",
