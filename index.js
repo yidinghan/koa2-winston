@@ -247,4 +247,5 @@ module.exports = {
   keysRecorder,
   serializer,
   getLogLevel,
+  stringify,
 };
