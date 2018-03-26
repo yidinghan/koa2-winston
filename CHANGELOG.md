@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0"></a>
+# [2.0.0](https://github.com/yidinghan/koa2-winston/compare/v1.7.1...v2.0.0) (2018-03-26)
+
+
+### Features
+
+* use fast json stringify as default stringify ([7d70b88](https://github.com/yidinghan/koa2-winston/commit/7d70b88))
+* **stringify:** finish schema properties ([e832e6a](https://github.com/yidinghan/koa2-winston/commit/e832e6a))
+* **stringify:** init fast json schema ([4cb2cd7](https://github.com/yidinghan/koa2-winston/commit/4cb2cd7))
+* **stringify:** top level keys to  schema ([3f08891](https://github.com/yidinghan/koa2-winston/commit/3f08891))
+
+
+
 <a name="1.7.1"></a>
 ## [1.7.1](https://github.com/yidinghan/koa2-winston/compare/v1.7.0...v1.7.1) (2017-08-29)
 
