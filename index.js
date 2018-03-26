@@ -206,7 +206,6 @@ const logger = (payload = {}) => {
   const {
     transports = [
       new winston.transports.Console({
-        json: true,
         format: winston.format.printf(stringify),
       }),
     ],
