@@ -28,7 +28,7 @@ const fastJson = require('fast-json-stringify');
 //   "message": "HTTP GET /hello?foo=bar"
 // }
 
-const schema = {
+const stringify = fastJson({
   title: 'koa2 logger',
   type: 'object',
   properties: {
@@ -39,14 +39,42 @@ const schema = {
     req: {
       type: 'object',
       additionalProperties: true,
+      properties: {
+        headers: {
+          type: 'object',
+          additionalProperties: { type: 'string' },
+          properties: {
+            host: { type: 'string' },
+            accept: { type: 'string' },
+            'user-agent': { type: 'string' },
+            'accept-encoding': { type: 'string' },
+          },
+        },
+        url: { type: 'string' },
+        method: { type: 'string' },
+        href: { type: 'string' },
+        query: {
+          type: 'object',
+          additionalProperties: { type: 'string' },
+        },
+      },
     },
     res: {
       type: 'object',
       additionalProperties: true,
+      properties: {
+        headers: {
+          type: 'object',
+          additionalProperties: { type: 'string' },
+          properties: {
+            'content-type': { type: 'string' },
+            'content-length': { type: 'string' },
+          },
+        },
+        status: { type: 'string' },
+      },
     },
   },
-};
-
-const stringify = fastJson(schema);
+});
 
 module.exports = stringify;
