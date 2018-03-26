@@ -7,6 +7,7 @@ const onFinished = require('on-finished');
 const { format } = require('util');
 
 const stringify = require('./stringify');
+const FastJsonConsole = require('./fast_json_console');
 
 /**
  * clone object
@@ -199,7 +200,7 @@ const getLogLevel = (statusCode = 200, defaultLevel = 'info') => {
  */
 const logger = (payload = {}) => {
   const {
-    transports = [new winston.transports.Console({ json: true, stringify })],
+    transports = [new FastJsonConsole({ stringify })],
     level = 'info',
     msg = 'HTTP %s %s',
   } = payload;
@@ -248,4 +249,5 @@ module.exports = {
   serializer,
   getLogLevel,
   stringify,
+  FastJsonConsole,
 };
