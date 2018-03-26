@@ -38,17 +38,10 @@ const stringify = fastJson({
     message: { type: 'string' },
     req: {
       type: 'object',
-      additionalProperties: true,
       properties: {
         headers: {
           type: 'object',
           additionalProperties: { type: 'string' },
-          properties: {
-            host: { type: 'string' },
-            accept: { type: 'string' },
-            'user-agent': { type: 'string' },
-            'accept-encoding': { type: 'string' },
-          },
         },
         url: { type: 'string' },
         method: { type: 'string' },
@@ -57,21 +50,32 @@ const stringify = fastJson({
           type: 'object',
           additionalProperties: { type: 'string' },
         },
+        origin: { type: 'string' },
+        originalUrl: { type: 'string' },
+        path: { type: 'string' },
+        querystring: { type: 'string' },
+        search: { type: 'string' },
+        hostname: { type: 'string' },
+        URL: { type: 'string' },
+        type: { type: 'string' },
+        charset: { type: 'string' },
+        protocol: { type: 'string' },
+        secure: { type: 'string' },
+        ip: { type: 'string' },
       },
     },
     res: {
       type: 'object',
-      additionalProperties: true,
       properties: {
         headers: {
           type: 'object',
           additionalProperties: { type: 'string' },
-          properties: {
-            'content-type': { type: 'string' },
-            'content-length': { type: 'string' },
-          },
         },
         status: { type: 'string' },
+        body: {
+          type: 'object',
+          additionalProperties: true,
+        },
       },
     },
   },
