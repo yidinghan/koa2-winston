@@ -1,6 +1,6 @@
 {
   "name": "koa2-winston",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "koa2 version winston logger like express-winston",
   "main": "index.js",
   "engines": {
