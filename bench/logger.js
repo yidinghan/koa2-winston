@@ -37,5 +37,5 @@ bench.run();
 // middleware x 107,464 ops/sec ±7.99% (19 runs sampled)
 
 // node 8.10
-// with indexOf
-// middleware x 125,694 ops/sec ±2.72% (17 runs sampled)
+// with fast-json-stringify
+// middleware x 132,868 ops/sec ±2.58% (19 runs sampled)
