@@ -6,6 +6,8 @@ const unset = require('lodash.unset');
 const onFinished = require('on-finished');
 const { format } = require('util');
 
+const stringify = require('./stringify');
+
 /**
  * clone object
  *
@@ -198,7 +200,7 @@ exports.getLogLevel = (statusCode = 200, defaultLevel = 'info') => {
 exports.logger = (payload = {}) => {
   const {
     transports = [
-      new winston.transports.Console({ json: true, stringify: true }),
+      new winston.transports.Console({ json: true, stringify }),
     ],
     level = 'info',
     msg = 'HTTP %s %s',
