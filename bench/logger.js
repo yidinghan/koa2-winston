@@ -8,22 +8,28 @@ const { logger } = require('../');
 const middleware = logger();
 
 const bench = new Benchmark('middleware', {
+  initCount: 100,
   defer: true,
   onCycle: event => console.log(String(event.target)),
   async fn(deferred) {
     const event = new EventEmitter();
-    await middleware({
-      request: {
-        method: 'get',
-        url: '/ding',
-        headers: {
-          cookie: 'ding',
+    await middleware(
+      {
+        request: {
+          method: 'get',
+          url: '/ding',
+          headers: {
+            cookie: 'ding',
+          },
         },
+        response: event,
       },
-      response: event,
-    }, () => event.emit('end'));
+      () => event.emit('end'),
+    );
     deferred.resolve();
   },
+  onComplete: complete =>
+    console.log({ 'total ops/sec': complete.target.hz }),
 });
 
 bench.run();
