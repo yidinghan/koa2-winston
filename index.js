@@ -204,7 +204,12 @@ const createLogger = (payload) => {
  */
 const logger = (payload = {}) => {
   const {
-    transports = [new winston.transports.Console({ json: true, stringify })],
+    transports = [
+      new winston.transports.Console({
+        json: true,
+        format: winston.format.printf(stringify),
+      }),
+    ],
     level = 'info',
     msg = 'HTTP %s %s',
   } = payload;
