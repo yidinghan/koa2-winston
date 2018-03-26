@@ -42,15 +42,15 @@
   },
   "devDependencies": {
     "@types/node": "^9.6.0",
-    "ava": "^0.23.0",
+    "ava": "^0.25.0",
     "benchmark": "^2.1.4",
-    "documentation": "^5.3.3",
-    "eslint": "^4.11.0",
+    "documentation": "^6.1.0",
+    "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-plugin-import": "^2.8.0",
-    "koa": "^2.4.1",
-    "nyc": "^11.3.0",
+    "eslint-plugin-import": "^2.9.0",
+    "koa": "^2.5.0",
+    "nyc": "^11.6.0",
     "supertest": "^3.0.0",
-    "winston": "^2.4.0"
+    "winston": "^2.4.1"
   }
 }
