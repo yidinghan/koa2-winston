@@ -156,6 +156,8 @@ exports.getLogLevel = (statusCode = 200, defaultLevel = 'info') => {
  * @param {string} [payload.resKeys=['headers', 'status']] - default response fields to be logged
  * @param {string} [payload.resSelect=[]] - additional response fields to be logged
  * @param {string} [payload.resUnselect=[]] - response field will be removed from the log
+ * @param {string} [payload.logger] - customize winston logger
+ * @param {string} [payload.msg=HTTP %s %s] - customize log msg
  * @return {function} logger middleware
  * @example
  * const { logger } = require('koa2-winston');
