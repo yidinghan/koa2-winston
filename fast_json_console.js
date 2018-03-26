@@ -6,14 +6,13 @@ class FastJsonConsoleTransport extends winston.Transport {
     super();
 
     this.stringify = stringify;
-    this.eol = os.EOL;
   }
   log(level, message, meta, callback) {
     const output = this.stringify(Object.assign({ message, level }, meta));
     if (level === 'error') {
-      process.stderr.write(output + this.eol);
+      process.stderr.write(output + os.EOL);
     } else {
-      process.stdout.write(output + this.eol);
+      process.stdout.write(output + os.EOL);
     }
 
     this.emit('logged');
