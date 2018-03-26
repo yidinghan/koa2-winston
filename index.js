@@ -150,6 +150,11 @@ const getLogLevel = (statusCode = 200, defaultLevel = 'info') => {
   }
 };
 
+const createLogger = (payload) => {
+  const { transports } = payload;
+  return winston.createLogger({ transports });
+};
+
 /**
  * logger middleware for koa2 use winston
  *
@@ -199,29 +204,33 @@ const getLogLevel = (statusCode = 200, defaultLevel = 'info') => {
  */
 const logger = (payload = {}) => {
   const {
-    transports = [new winston.transports.Console({ json: true, stringify })],
+    transports = [
+      new winston.transports.Console({
+        format: winston.format.printf(stringify),
+      }),
+    ],
     level = 'info',
     msg = 'HTTP %s %s',
   } = payload;
 
-  const winstonLogger = payload.logger || new winston.Logger({ transports });
+  const winstonLogger = payload.logger || createLogger({ transports });
   const reqSerializer = serializer.req(payload);
   const resSerializer = serializer.res(payload);
 
-  const onResponseFinished = (ctx, loggerMsg, meta) => {
+  const onResponseFinished = (ctx, meta) => {
     meta.res = resSerializer(ctx.response);
     meta.duration = Date.now() - meta.started_at;
 
-    const logLevel = getLogLevel(meta.res.status, level);
-    winstonLogger[logLevel](loggerMsg, meta);
+    meta.level = getLogLevel(meta.res.status, level);
+    winstonLogger.log(meta);
   };
 
   return async (ctx, next) => {
     const meta = {
       req: reqSerializer(ctx.request),
       started_at: Date.now(),
+      message: format(msg, ctx.request.method, ctx.request.url),
     };
-    const loggerMsg = format(msg, meta.req.method, meta.req.url);
 
     let error;
     try {
@@ -230,10 +239,7 @@ const logger = (payload = {}) => {
       // catch and throw it later
       error = e;
     } finally {
-      onFinished(
-        ctx.response,
-        onResponseFinished.bind(null, ctx, loggerMsg, meta),
-      );
+      onFinished(ctx.response, onResponseFinished.bind(null, ctx, meta));
     }
 
     if (error) {
