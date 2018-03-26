@@ -4,7 +4,7 @@ const Benchmark = require('benchmark');
 
 const stringify = require('../stringify');
 
-const bench = new Benchmark('middleware', {
+const bench = new Benchmark('console', {
   initCount: 100,
   onCycle: event => console.log(String(event.target)),
   fn() {
