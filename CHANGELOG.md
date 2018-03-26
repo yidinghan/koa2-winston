@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.2.0"></a>
+# [2.2.0](https://github.com/yidinghan/koa2-winston/compare/v2.1.0...v2.2.0) (2018-03-26)
+
+
+### Bug Fixes
+
+* **fast json console:** missing default value ([d12580f](https://github.com/yidinghan/koa2-winston/commit/d12580f))
+
+
+### Features
+
+* export stringify in index ([4fe3a94](https://github.com/yidinghan/koa2-winston/commit/4fe3a94))
+* **fast json console:** customized transports ([70101b6](https://github.com/yidinghan/koa2-winston/commit/70101b6))
+* **fast json console:** speed up as defaults ([729768b](https://github.com/yidinghan/koa2-winston/commit/729768b))
+
+
+
 <a name="2.1.0"></a>
 # [2.1.0](https://github.com/yidinghan/koa2-winston/compare/v2.0.0...v2.1.0) (2018-03-26)
 
