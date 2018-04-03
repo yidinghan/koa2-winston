@@ -22,7 +22,9 @@ const getOptions = name => ({
   defer: true,
   onCycle: event => console.log(String(event.target)),
   onComplete: complete =>
-    console.log({ [`${name} total ops/sec`]: complete.target.hz }),
+    console.log({
+      [`${name} total ops/sec`]: parseInt(complete.target.hz, 10),
+    }),
 });
 
 suite
