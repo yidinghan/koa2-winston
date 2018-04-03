@@ -3,6 +3,7 @@
 const Benchmark = require('benchmark');
 const FastJsonConsole = require('../fast_json_console');
 const stringify = require('../stringify');
+const os = require('os');
 const winston = require('winston');
 const EventEmitter = require('events');
 
@@ -17,9 +18,9 @@ const consoleMW = logger({
 
 const suite = new Benchmark.Suite();
 
-const getOptions = name => ({
+const getOptions = (name, defer = true) => ({
   initCount: 100,
-  defer: true,
+  defer,
   onCycle: event => console.log(String(event.target)),
   onComplete: complete =>
     console.log({
@@ -27,7 +28,30 @@ const getOptions = name => ({
     }),
 });
 
+const TEST_LOG = {
+  started_at: 1522078024245,
+  duration: 388,
+  level: 'info',
+  message: 'HTTP get /ding',
+  req: { headers: {}, url: '/ding', method: 'get' },
+  res: {},
+};
+
 suite
+  .add(
+    'stdout with jsonstringify',
+    () => {
+      process.stdout.write(JSON.stringify(TEST_LOG) + os.EOL);
+    },
+    getOptions('stdout with jsonstringify', false),
+  )
+  .add(
+    'stdout with schemastringify',
+    () => {
+      process.stdout.write(stringify(TEST_LOG) + os.EOL);
+    },
+    getOptions('stdout with schemastringify', false),
+  )
   .add(
     'console',
     async (deferred) => {
