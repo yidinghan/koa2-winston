@@ -21,11 +21,9 @@ const suite = new Benchmark.Suite();
 const getOptions = (name, defer = true) => ({
   initCount: 100,
   defer,
-  onCycle: event => console.log(String(event.target)),
-  onComplete: complete =>
-    console.log({
-      [`${name} total ops/sec`]: parseInt(complete.target.hz, 10),
-    }),
+  onCycle: ({ target }) => console.log(String(target)),
+  onComplete: ({ target: { hz } }) =>
+    console.log('total ops/sec', { [name]: parseInt(hz, 10) }),
 });
 
 const TEST_LOG = {
@@ -39,18 +37,18 @@ const TEST_LOG = {
 
 suite
   .add(
-    'stdout with jsonstringify',
-    () => {
-      process.stdout.write(JSON.stringify(TEST_LOG) + os.EOL);
-    },
-    getOptions('stdout with jsonstringify', false),
-  )
-  .add(
     'stdout with schemastringify',
     () => {
       process.stdout.write(stringify(TEST_LOG) + os.EOL);
     },
     getOptions('stdout with schemastringify', false),
+  )
+  .add(
+    'stdout with jsonstringify',
+    () => {
+      process.stdout.write(JSON.stringify(TEST_LOG) + os.EOL);
+    },
+    getOptions('stdout with jsonstringify', false),
   )
   .add(
     'console',
