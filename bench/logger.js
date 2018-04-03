@@ -1,38 +1,74 @@
 /* eslint no-console: 0 */
 /* eslint import/no-extraneous-dependencies: 0 */
 const Benchmark = require('benchmark');
+const FastJsonConsole = require('../fast_json_console');
+const stringify = require('../stringify');
+const winston = require('winston');
 const EventEmitter = require('events');
 
 const { logger } = require('../');
 
-const middleware = logger();
+const stringifyMW = logger({
+  transports: [new FastJsonConsole({ stringify })],
+});
+const consoleMW = logger({
+  transports: [new winston.transports.Console({ json: true, stringify: true })],
+});
 
-const bench = new Benchmark('middleware', {
+const suite = new Benchmark.Suite();
+
+const getOptions = name => ({
   initCount: 100,
   defer: true,
   onCycle: event => console.log(String(event.target)),
-  async fn(deferred) {
-    const event = new EventEmitter();
-    await middleware(
-      {
-        request: {
-          method: 'get',
-          url: '/ding',
-          headers: {
-            cookie: 'ding',
-          },
-        },
-        response: event,
-      },
-      () => event.emit('end'),
-    );
-    deferred.resolve();
-  },
   onComplete: complete =>
-    console.log({ 'total ops/sec': complete.target.hz }),
+    console.log({ [`${name} total ops/sec`]: complete.target.hz }),
 });
 
-bench.run();
+suite
+  .add(
+    'console',
+    async (deferred) => {
+      const event = new EventEmitter();
+      await consoleMW(
+        {
+          request: {
+            method: 'get',
+            url: '/ding',
+            headers: {
+              cookie: 'ding',
+            },
+          },
+          response: event,
+        },
+        () => event.emit('end'),
+      );
+      deferred.resolve();
+    },
+    getOptions('console'),
+  )
+  .add(
+    'stringify',
+    async (deferred) => {
+      const event = new EventEmitter();
+      await stringifyMW(
+        {
+          request: {
+            method: 'get',
+            url: '/ding',
+            headers: {
+              cookie: 'ding',
+            },
+          },
+          response: event,
+        },
+        () => event.emit('end'),
+      );
+      deferred.resolve();
+    },
+    getOptions('stringify'),
+  )
+  .run();
 
 // middleware x 41,182 ops/sec ±4.19% (21 runs sampled)
 
