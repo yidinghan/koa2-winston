@@ -2,6 +2,7 @@
 const winston = require('winston');
 const get = require('lodash.get');
 const set = require('lodash.set');
+const assign = require('lodash.assign');
 const unset = require('lodash.unset');
 const onFinished = require('on-finished');
 const { format } = require('util');
@@ -200,7 +201,7 @@ const getLogLevel = (statusCode = 200, defaultLevel = 'info') => {
  */
 const logger = (payload = {}) => {
   const {
-    transports = [new FastJsonConsole({ stringify })],
+    transports = [new FastJsonConsole({ stringify, assign })],
     level = 'info',
     msg = 'HTTP %s %s',
   } = payload;
