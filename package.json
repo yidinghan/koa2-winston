@@ -10,7 +10,7 @@
     "doc": "documentation readme index.js --section=JSDoc",
     "lint": "eslint ./test/*.js ./index.js --fix",
     "release": "standard-version",
-    "bench": "node node bench/simple.js | grep 'ops'",
+    "bench": "node bench/simple.js | grep 'ops'",
     "nyc": "nyc ava && nyc report",
     "test": "nyc ava"
   },

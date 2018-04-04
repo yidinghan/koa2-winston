@@ -9,8 +9,6 @@ cache:
     - node_modules
 before_script:
   - 'npm prune'
-script:
-  - npm test
-  - npm run bench
 after_success:
+  - npm run bench
   - npm run coveralls
