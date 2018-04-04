@@ -6,15 +6,9 @@ const flatstr = (s) => {
   return s;
 };
 
-const stdwrite = (level, log) => {
-  if (level === 'error') {
-    process.stderr.write(log + os.EOL);
-  } else {
-    process.stdout.write(log + os.EOL);
-  }
-};
+const stdwrite = log => process.stdout.write(log + os.EOL);
 
-const flatwrite = (level, log) => stdwrite(level, flatstr(log));
+const flatwrite = log => stdwrite(flatstr(log));
 
 class FastJsonConsoleTransport extends winston.Transport {
   constructor(options = {}) {
