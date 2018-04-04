@@ -21,8 +21,8 @@ const clone = (obj) => {
   }
 
   const copycat = {};
-  Object.entries(obj).forEach(([key, val]) => {
-    copycat[key] = clone(val);
+  Object.keys(obj).forEach((key) => {
+    copycat[key] = clone(obj[key]);
   });
 
   return copycat;
