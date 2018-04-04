@@ -6,11 +6,15 @@ class FastJsonConsoleTransport extends winston.Transport {
     super();
 
     this.stringify = options.stringify || JSON.stringify;
+    this.assign = options.assign || Object.assign;
   }
   log(level, message, meta, callback) {
-    process.stdout.write(this.stringify(Object.assign({ message, level }, meta)) + os.EOL);
+    process.stdout.write(this.getLog(level, message, meta));
 
     callback(null, true);
+  }
+  getLog(level, message, meta) {
+    return this.stringify(this.assign({ level, message }, meta)) + os.EOL;
   }
 }
 

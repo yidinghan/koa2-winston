@@ -2,15 +2,10 @@
 /* eslint import/no-extraneous-dependencies: 0 */
 const Benchmark = require('benchmark');
 const winston = require('winston');
+const loassign = require('lodash.assign');
 const FastJsonConsole = require('../fast_json_console');
 const stringify = require('../stringify');
 
-const schemastringifyLogger = new winston.Logger({
-  transports: [new FastJsonConsole({ stringify })],
-});
-const jsonstringifyLogger = new winston.Logger({
-  transports: [new FastJsonConsole({ stringify: JSON.stringify })],
-});
 const suite = new Benchmark.Suite();
 
 const getOptions = name => ({
@@ -27,11 +22,31 @@ const TEST_LOG = {
   res: {},
 };
 
+const defaultLogger = new winston.Logger({
+  transports: [new FastJsonConsole()],
+});
+const schemastringifyLogger = new winston.Logger({
+  transports: [new FastJsonConsole({ stringify })],
+});
+const loassignLogger = new winston.Logger({
+  transports: [new FastJsonConsole({ assign: loassign })],
+});
+
 suite
   .add(
-    'jsonstringify',
-    () => jsonstringifyLogger.info('test', TEST_LOG),
-    getOptions('jsonstringify'),
+    'warmup',
+    () => defaultLogger.info('test', TEST_LOG),
+    getOptions('warmup'),
+  )
+  .add(
+    'default',
+    () => defaultLogger.info('test', TEST_LOG),
+    getOptions('default'),
+  )
+  .add(
+    'loassign',
+    () => loassignLogger.info('test', TEST_LOG),
+    getOptions('loassign'),
   )
   .add(
     'schemastringify',
