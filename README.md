@@ -253,7 +253,7 @@ middleware x 112,011 ops/sec ±10.26% (18 runs sampled)
 
 ## Schema Stringify
 
-With [fast-json-stringify](https://github.com/fastify/fast-json-stringify) support, default transport logger is much faster
+With [fast-json-stringify](https://github.com/fastify/fast-json-stringify) support, default transport [logger](https://github.com/yidinghan/koa2-winston/blob/master/fast_json_console.js) is much faster
 
 ```sh
 total ops/sec { jsonstringify: 73544 }
