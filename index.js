@@ -155,7 +155,7 @@ const getLogLevel = (statusCode = 200, defaultLevel = 'info') => {
  * logger middleware for koa2 use winston
  *
  * @param {object} [payload={}] - input arguments
- * @param {object[]} [payload.transports=winston.transports.Console] - winston transports instance
+ * @param {object[]} [payload.transports=[new FastJsonConsole({ stringify })]] - customize transports
  * @param {string} [payload.level='info'] - default log level of logger
  * @param {string} [payload.reqKeys=['headers', 'url', 'method',
  *                  'httpVersion', 'href', 'query', 'length']] - default request fields to be logged
