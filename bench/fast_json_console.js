@@ -31,6 +31,9 @@ const schemastringifyLogger = new winston.Logger({
 const loassignLogger = new winston.Logger({
   transports: [new FastJsonConsole({ assign: loassign })],
 });
+const loschemaLogger = new winston.Logger({
+  transports: [new FastJsonConsole({ assign: loassign, stringify })],
+});
 
 suite
   .add(
@@ -52,6 +55,11 @@ suite
     'schemastringify',
     () => schemastringifyLogger.info('test', TEST_LOG),
     getOptions('schemastringify'),
+  )
+  .add(
+    'loschema',
+    () => loschemaLogger.info('test', TEST_LOG),
+    getOptions('loschema'),
   )
   .run();
 
