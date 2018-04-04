@@ -2,7 +2,7 @@
 /* eslint import/no-extraneous-dependencies: 0 */
 const Benchmark = require('benchmark');
 const winston = require('winston');
-const loassign = require('lodash.assign');
+const assign = require('lodash.assign');
 const FastJsonConsole = require('../fast_json_console');
 const stringify = require('../stringify');
 
@@ -29,10 +29,10 @@ const schemastringifyLogger = new winston.Logger({
   transports: [new FastJsonConsole({ stringify })],
 });
 const loassignLogger = new winston.Logger({
-  transports: [new FastJsonConsole({ assign: loassign })],
+  transports: [new FastJsonConsole({ assign })],
 });
 const loschemaLogger = new winston.Logger({
-  transports: [new FastJsonConsole({ assign: loassign, stringify })],
+  transports: [new FastJsonConsole({ assign, stringify })],
 });
 
 suite
@@ -62,15 +62,3 @@ suite
     getOptions('loschema'),
   )
   .run();
-
-// middleware x 41,182 ops/sec ±4.19% (21 runs sampled)
-
-// node 8.2
-// middleware x 80,848 ops/sec ±8.30% (17 runs sampled)
-
-// node 8.4
-// middleware x 107,464 ops/sec ±7.99% (19 runs sampled)
-
-// node 8.10
-// with fast-json-stringify
-// middleware x 132,868 ops/sec ±2.58% (19 runs sampled)
