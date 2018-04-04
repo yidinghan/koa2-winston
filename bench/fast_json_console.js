@@ -5,7 +5,7 @@ const winston = require('winston');
 const FastJsonConsole = require('../fast_json_console');
 const stringify = require('../stringify');
 
-const stringifyLogger = new winston.Logger({
+const schemastringifyLogger = new winston.Logger({
   transports: [new FastJsonConsole({ stringify })],
 });
 const jsonstringifyLogger = new winston.Logger({
@@ -34,9 +34,9 @@ suite
     getOptions('jsonstringify'),
   )
   .add(
-    'stringify',
-    () => stringifyLogger.info('test', TEST_LOG),
-    getOptions('stringify'),
+    'schemastringify',
+    () => schemastringifyLogger.info('test', TEST_LOG),
+    getOptions('schemastringify'),
   )
   .run();
 
