@@ -8,8 +8,8 @@ const stringify = require('../stringify');
 const stringifyLogger = new winston.Logger({
   transports: [new FastJsonConsole({ stringify })],
 });
-const flatstringifyLogger = new winston.Logger({
-  transports: [new FastJsonConsole({ stringify, flatstr: true })],
+const jsonstringifyLogger = new winston.Logger({
+  transports: [new FastJsonConsole({ stringify: JSON.stringify })],
 });
 const suite = new Benchmark.Suite();
 
@@ -29,9 +29,9 @@ const TEST_LOG = {
 
 suite
   .add(
-    'flatstringify',
-    () => flatstringifyLogger.info('test', TEST_LOG),
-    getOptions('flatstringify'),
+    'jsonstringify',
+    () => jsonstringifyLogger.info('test', TEST_LOG),
+    getOptions('jsonstringify'),
   )
   .add(
     'stringify',
