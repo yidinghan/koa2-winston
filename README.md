@@ -28,6 +28,7 @@ Add logger to your koa2 server in 3 lines
     - [Record a response body filed](#record-a-response-body-filed)
 - [Simple Benchmark](#simple-benchmark)
   - [Schema Stringify](#schema-stringify)
+  - [v1.7.1 vs v2.4.0](#v171-vs-v240)
 - [JSDoc](#jsdoc)
   - [clone](#clone)
   - [keysRecorder](#keysrecorder)
@@ -264,6 +265,19 @@ total ops/sec { jsonstringify: 73544 }
 total ops/sec { schemastringify: 90223 }
 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
 ```
+
+`schemastringify` is 1.23x faster then `jsonstringify` in this case
+
+## v1.7.1 vs v2.4.0
+
+```sh
+total ops/sec { 'v1.7.1': 111416 }
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+total ops/sec { 'v2.4.0': 131234 }
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+```
+
+`v2.4.0` is 1.18x faster then `v1.7.1` in this case
 
 # JSDoc
 
