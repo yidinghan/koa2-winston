@@ -11,7 +11,7 @@
     "lint": "eslint ./test/*.js ./index.js --fix",
     "release": "standard-version",
     "bench": "node node bench/simple.js | grep 'ops'",
-    "nyc": "nyc ava && nyc report --reporter=html",
+    "nyc": "nyc ava && nyc report",
     "test": "nyc ava"
   },
   "repository": {
