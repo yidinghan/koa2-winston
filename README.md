@@ -27,6 +27,7 @@ Add logger to your koa2 server in 3 lines
     - [Do not record UA](#do-not-record-ua)
     - [Record a response body filed](#record-a-response-body-filed)
 - [Simple Benchmark](#simple-benchmark)
+  - [Schema Stringify](#schema-stringify)
 - [JSDoc](#jsdoc)
   - [keysRecorder](#keysrecorder)
   - [logger](#logger)
@@ -48,7 +49,7 @@ const { logger } = require('koa2-winston');
 app.use(logger());
 ```
 
-request log will look like 
+request log will look like
 
 ```json
 {
@@ -249,6 +250,17 @@ middleware x 90,281 ops/sec ±7.89% (13 runs sampled)
 At node 8.4
 
 middleware x 112,011 ops/sec ±10.26% (18 runs sampled)
+
+## Schema Stringify
+
+With [fast-json-stringify](https://github.com/fastify/fast-json-stringify) support, default transport logger is much faster
+
+```sh
+total ops/sec { jsonstringify: 73544 }
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+total ops/sec { schemastringify: 90223 }
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+```
 
 # JSDoc
 
