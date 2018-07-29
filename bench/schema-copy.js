@@ -91,3 +91,16 @@ if (!module.parent) {
 }
 
 module.exports = { simpleCopy, schemaCopy, forkCopy };
+
+// ➜  koa2-winston git:(master) node bench/schema-copy.js fork
+// total ops/sec { forkCopy: 1531231 }
+// total ops/sec { forkCopy: 1544226 }
+// total ops/sec { forkCopy: 1531241 }
+// ➜  koa2-winston git:(master) node bench/schema-copy.js schema
+// total ops/sec { schemaCopy: 151576 }
+// total ops/sec { schemaCopy: 152341 }
+// total ops/sec { schemaCopy: 153551 }
+// ➜  koa2-winston git:(master) node bench/schema-copy.js simple
+// total ops/sec { simpleCopy: 149366 }
+// total ops/sec { simpleCopy: 149004 }
+// total ops/sec { simpleCopy: 147134 }
