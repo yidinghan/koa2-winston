@@ -30,6 +30,18 @@ const stringify = fastJson(schema);
 
 const schemaCopy = obj => JSON.parse(stringify(obj));
 const simpleCopy = obj => JSON.parse(JSON.stringify(obj));
+const forkCopy = (obj) => {
+  if (obj === null || typeof obj !== 'object') {
+    return obj;
+  }
+
+  const copycat = {};
+  Object.keys(obj).forEach((key) => {
+    copycat[key] = forkCopy(obj[key]);
+  });
+
+  return copycat;
+};
 
 // const schemaCopy = obj => stringify(obj);
 // const simpleCopy = obj => JSON.stringify(obj);
@@ -71,8 +83,11 @@ if (!module.parent) {
       getOptions('simpleCopy'),
     );
   }
+  if (/fork/.test(argv)) {
+    suite.add('forkCopy', () => forkCopy(TEST_OBJ), getOptions('forkCopy'));
+  }
 
   suite.run();
 }
 
-module.exports = { simpleCopy, schemaCopy };
+module.exports = { simpleCopy, schemaCopy, forkCopy };
