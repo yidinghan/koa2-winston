@@ -116,3 +116,17 @@ module.exports = { simpleCopy, schemaCopy, forkCopy };
 // total ops/sec { simpleCopy: 149366 }
 // total ops/sec { simpleCopy: 149004 }
 // total ops/sec { simpleCopy: 147134 }
+
+// stats with delete
+// ➜  koa2-winston git:(master) node bench/schema-copy.js fork
+// total ops/sec { forkCopy: 1319846 }
+// total ops/sec { forkCopy: 1312784 }
+// total ops/sec { forkCopy: 1312258 }
+// ➜  koa2-winston git:(master) node bench/schema-copy.js schema
+// total ops/sec { schemaCopy: 152244 }
+// total ops/sec { schemaCopy: 152654 }
+// total ops/sec { schemaCopy: 153078 }
+// ➜  koa2-winston git:(master) node bench/schema-copy.js simple
+// total ops/sec { simpleCopy: 140539 }
+// total ops/sec { simpleCopy: 141226 }
+// total ops/sec { simpleCopy: 141576 }
