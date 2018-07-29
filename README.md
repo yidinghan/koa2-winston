@@ -29,6 +29,7 @@ Add logger to your koa2 server in 3 lines
 - [Simple Benchmark](#simple-benchmark)
   - [Schema Stringify](#schema-stringify)
   - [v1.7.1 vs v2.4.0](#v171-vs-v240)
+  - [Math.floor vs parseInt](#mathfloor-vs-parseint)
 - [JSDoc](#jsdoc)
   - [clone](#clone)
   - [keysRecorder](#keysrecorder)
@@ -60,11 +61,14 @@ request log will look like
       "host": "localhost:3000",
       "connection": "keep-alive",
       "upgrade-insecure-requests": "1",
-      "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36",
-      "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+      "user-agent":
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36",
+      "accept":
+        "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
       "dnt": "1",
       "accept-encoding": "gzip, deflate, sdch, br",
-      "accept-language": "zh-CN,zh;q=0.8,en;q=0.6,zh-TW;q=0.4,de;q=0.2,ja;q=0.2,it;q=0.2"
+      "accept-language":
+        "zh-CN,zh;q=0.8,en;q=0.6,zh-TW;q=0.4,de;q=0.2,ja;q=0.2,it;q=0.2"
     },
     "url": "/hello",
     "method": "GET",
@@ -90,16 +94,26 @@ request log will look like
 Each parameter has a default value, and you can customize your logger by changing the configuration
 
 ```js
-app.use(logger({
-  transports: new winston.transports.Console({ json: true, stringify: true }),
-  level: 'info',
-  reqKeys: ['headers','url','method', 'httpVersion','href','query','length'],
-  reqSelect: [],
-  reqUnselect: ['headers.cookie'],
-  resKeys: ['headers','status'],
-  resSelect: [],
-  resUnselect: [],
-}));
+app.use(
+  logger({
+    transports: new winston.transports.Console({ json: true, stringify: true }),
+    level: 'info',
+    reqKeys: [
+      'headers',
+      'url',
+      'method',
+      'httpVersion',
+      'href',
+      'query',
+      'length',
+    ],
+    reqSelect: [],
+    reqUnselect: ['headers.cookie'],
+    resKeys: ['headers', 'status'],
+    resSelect: [],
+    resUnselect: [],
+  })
+);
 ```
 
 Many configuration explain can be found in [logger](#logger)
@@ -109,17 +123,18 @@ Many configuration explain can be found in [logger](#logger)
 ### Do not record any request fields
 
 ```js
-app.use(logger({
-  reqKeys: []
-}));
+app.use(
+  logger({
+    reqKeys: [],
+  })
+);
 ```
 
 The req object will be empty
 
 ```json
 {
-  "req": {
-  },
+  "req": {},
   "started_at": 1494486039864,
   "res": {
     "headers": {
@@ -137,9 +152,11 @@ The req object will be empty
 ### Do not record any response fields
 
 ```js
-app.use(logger({
-  resKeys: []
-}));
+app.use(
+  logger({
+    resKeys: [],
+  })
+);
 ```
 
 The res object will be empty
@@ -159,8 +176,7 @@ The res object will be empty
     "query": {}
   },
   "started_at": 1494486039864,
-  "res": {
-  },
+  "res": {},
   "duration": 26,
   "level": "info",
   "message": "HTTP GET /"
@@ -170,9 +186,11 @@ The res object will be empty
 ### Do not record UA
 
 ```js
-app.use(logger({
-  reqUnselect: ['headers.cookies', 'headers.user-agent']
-}));
+app.use(
+  logger({
+    reqUnselect: ['headers.cookies', 'headers.user-agent'],
+  })
+);
 ```
 
 The UA of request will be ignored
@@ -207,9 +225,11 @@ The UA of request will be ignored
 ### Record a response body filed
 
 ```js
-app.use(logger({
-  resSelect: ['body.success']
-}));
+app.use(
+  logger({
+    resSelect: ['body.success'],
+  })
+);
 ```
 
 The `success` field on `body` will be recorded
@@ -261,9 +281,9 @@ With [fast-json-stringify](https://github.com/fastify/fast-json-stringify) suppo
 
 ```sh
 total ops/sec { jsonstringify: 73544 }
-▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
-total ops/sec { schemastringify: 90223 }
 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+total ops/sec { schemastringify: 90223 }
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
 ```
 
 `schemastringify` is 1.23x faster then `jsonstringify` in this case
@@ -272,12 +292,25 @@ total ops/sec { schemastringify: 90223 }
 
 ```sh
 total ops/sec { 'v1.7.1': 111416 }
-▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
-total ops/sec { 'v2.4.0': 131234 }
 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+total ops/sec { 'v2.4.0': 131234 }
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
 ```
 
 `v2.4.0` is 1.18x faster then `v1.7.1` in this case
+
+## Math.floor vs parseInt
+
+Testing in Chrome 70.0.3505 / Mac OS X 10.13.5
+
+```
+parseInt(401 / 100, 10) { 160,092,130 Ops/sec }
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+Math.floor(401 / 100) { 810,032,369 Ops/sec }
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+```
+
+`Math.floor` is 5.06x faster then `parseInt` in this case
 
 # JSDoc
 
@@ -287,7 +320,7 @@ clone object
 
 **Parameters**
 
--   `obj` **any**
+- `obj` **any**
 
 ## keysRecorder
 
@@ -296,42 +329,45 @@ use ldoash pick, get and set to collect data from given target object
 
 **Parameters**
 
--   `payload` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** input arguments (optional, default `{}`)
-    -   `payload.defaults` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>?** default keys will be collected
-    -   `payload.selects` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>?** keys will be collected as
-        additional part
-    -   `payload.unselects` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>?** keys that will be ignored at last
+- `payload` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** input arguments (optional, default `{}`)
+  - `payload.defaults` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>?** default keys will be collected
+  - `payload.selects` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>?** keys will be collected as
+    additional part
+  - `payload.unselects` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>?** keys that will be ignored at last
 
 **Examples**
 
 ```javascript
 // without payload
 const recorder = keysRecorder();
-recorder() // {}
-recorder({ foo: 1, bar: 2, foobar: { a: 3, b: 4 } }) // {}
+recorder(); // {}
+recorder({ foo: 1, bar: 2, foobar: { a: 3, b: 4 } }); // {}
 
 // with defaults
 const recorder = keysRecorder({ defaults: ['foo'] });
-recorder() // {}
-recorder({ foo: 1, bar: 2, foobar: { a: 3, b: 4 } }) // { foo: 1 }
+recorder(); // {}
+recorder({ foo: 1, bar: 2, foobar: { a: 3, b: 4 } }); // { foo: 1 }
 
 // with defaults and selects
 const recorder = keysRecorder({ defaults: ['foo'], selects: ['foobar'] });
-recorder() // {}
+recorder(); // {}
 recorder({
   foo: 1,
   bar: 2,
-  foobar: { a: 3, b: 4 }
-}) // { foo: 1, foobar: { a: 3, b: 4 } }
+  foobar: { a: 3, b: 4 },
+}); // { foo: 1, foobar: { a: 3, b: 4 } }
 
 // with defaults and unselects
-const recorder = keysRecorder({ defaults: ['foobar'], unselects: ['foobar.a'] });
-recorder() // {}
+const recorder = keysRecorder({
+  defaults: ['foobar'],
+  unselects: ['foobar.a'],
+});
+recorder(); // {}
 recorder({
   foo: 1,
   bar: 2,
-  foobar: { a: 3, b: 4 }
-}) // { foobar: { a: 3 } }
+  foobar: { a: 3, b: 4 },
+}); // { foobar: { a: 3 } }
 
 // with defaults and selects and unselects
 const recorder = keysRecorder({
@@ -339,12 +375,12 @@ const recorder = keysRecorder({
   selects: ['foobar'],
   unselects: ['foobar.b'],
 });
-recorder() // {}
+recorder(); // {}
 recorder({
   foo: 1,
   bar: 2,
-  foobar: { a: 3, b: 4 }
-}) // { foo: 1, foobar: { a: 3 } }
+  foobar: { a: 3, b: 4 },
+}); // { foo: 1, foobar: { a: 3 } }
 ```
 
 Returns **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** closure function, setting by given payload
@@ -355,19 +391,18 @@ logger middleware for koa2 use winston
 
 **Parameters**
 
--   `payload` **[object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** input arguments (optional, default `{}`)
-    -   `payload.transports` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)>** customize transports (optional, default `[newFastJsonConsole({stringify})]`)
-    -   `payload.level` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** default log level of logger (optional, default `'info'`)
-    -   `payload.reqKeys` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** default request fields to be logged (optional, default `['headers','url','method',
-        'httpVersion','href','query','length']`)
-    -   `payload.reqSelect` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** additional request fields to be logged (optional, default `[]`)
-    -   `payload.reqUnselect` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** request field
-                         will be removed from the log (optional, default `['headers.cookie']`)
-    -   `payload.resKeys` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** default response fields to be logged (optional, default `['headers','status']`)
-    -   `payload.resSelect` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** additional response fields to be logged (optional, default `[]`)
-    -   `payload.resUnselect` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** response field will be removed from the log (optional, default `[]`)
-    -   `payload.logger` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** customize winston logger
-    -   `payload.msg` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** customize log msg (optional, default `HTTP%s%s`)
+- `payload` **[object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** input arguments (optional, default `{}`)
+  - `payload.transports` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)>** customize transports (optional, default `[newFastJsonConsole({stringify})]`)
+  - `payload.level` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** default log level of logger (optional, default `'info'`)
+  - `payload.reqKeys` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** default request fields to be logged (optional, default `['headers','url','method', 'httpVersion','href','query','length']`)
+  - `payload.reqSelect` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** additional request fields to be logged (optional, default `[]`)
+  - `payload.reqUnselect` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** request field
+    will be removed from the log (optional, default `['headers.cookie']`)
+  - `payload.resKeys` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** default response fields to be logged (optional, default `['headers','status']`)
+  - `payload.resSelect` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** additional response fields to be logged (optional, default `[]`)
+  - `payload.resUnselect` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** response field will be removed from the log (optional, default `[]`)
+  - `payload.logger` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** customize winston logger
+  - `payload.msg` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** customize log msg (optional, default `HTTP%s%s`)
 
 **Examples**
 
