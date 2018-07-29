@@ -301,6 +301,8 @@ total ops/sec { 'v2.4.0': 131234 }
 
 ## Math.floor vs parseInt
 
+JSPerf link in [ HERE ](https://jsperf.com/minimum-multiple)
+
 Testing in Chrome 70.0.3505 / Mac OS X 10.13.5
 
 ```
