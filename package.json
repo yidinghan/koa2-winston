@@ -35,7 +35,7 @@
     "winston": "^2.4.1"
   },
   "dependencies": {
-    "fast-json-stringify": "^1.5.2",
+    "fast-json-stringify": "^1.7.1",
     "lodash.assign": "^4.2.0",
     "lodash.get": "^4.4.2",
     "lodash.set": "^4.3.2",
