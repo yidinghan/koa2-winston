@@ -142,7 +142,7 @@ const serializer = {
 };
 
 const getLogLevel = (statusCode = 200, defaultLevel = 'info') => {
-  switch (parseInt(statusCode / 100, 10)) {
+  switch (Math.floor(statusCode / 100)) {
     case 5:
       return 'error';
     case 4:
