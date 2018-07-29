@@ -58,6 +58,7 @@ const TEST_OBJ = {
         .join(),
     },
   },
+  h: 100,
 };
 
 const argv = process.argv.slice(2).join('');
@@ -79,12 +80,22 @@ if (!module.parent) {
   if (/simple/.test(argv)) {
     suite.add(
       'simpleCopy',
-      () => simpleCopy(TEST_OBJ),
+      () => {
+        const obj = simpleCopy(TEST_OBJ);
+        delete obj.h;
+      },
       getOptions('simpleCopy'),
     );
   }
   if (/fork/.test(argv)) {
-    suite.add('forkCopy', () => forkCopy(TEST_OBJ), getOptions('forkCopy'));
+    suite.add(
+      'forkCopy',
+      () => {
+        const obj = forkCopy(TEST_OBJ);
+        delete obj.h;
+      },
+      getOptions('forkCopy'),
+    );
   }
 
   suite.run();
@@ -92,6 +103,7 @@ if (!module.parent) {
 
 module.exports = { simpleCopy, schemaCopy, forkCopy };
 
+// stats without delete
 // ➜  koa2-winston git:(master) node bench/schema-copy.js fork
 // total ops/sec { forkCopy: 1531231 }
 // total ops/sec { forkCopy: 1544226 }
