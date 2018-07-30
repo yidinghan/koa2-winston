@@ -57,14 +57,14 @@ test('log level should use defautl value', async (t) => {
 
 test('log level should be warn when status=400', async (t) => {
   const msgs = [];
-  const warnHanler = (ctx) => {
+  const warnHandler = (ctx) => {
     ctx.status = 400;
   };
   const app = useLogger(
     {
       transports: [new CustomTransport(msgs)],
     },
-    warnHanler,
+    warnHandler,
   );
   await request(app).post('/test').expect(400);
 
@@ -75,7 +75,7 @@ test('log level should be warn when status=400', async (t) => {
 test('cookies should still exists', async (t) => {
   const msgs = [];
   let cookie = '';
-  const cookieHanler = (ctx) => {
+  const cookieHandler = (ctx) => {
     cookie = ctx.headers.cookie;
     ctx.body = 'dingding';
   };
@@ -83,7 +83,7 @@ test('cookies should still exists', async (t) => {
     {
       transports: [new CustomTransport(msgs)],
     },
-    cookieHanler,
+    cookieHandler,
   );
   await request(app).post('/test').set('Cookie', 'ding=ding').expect(200);
 
