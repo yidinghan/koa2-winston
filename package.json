@@ -53,6 +53,7 @@
     "koa": "^2.6.1",
     "nyc": "^13.1.0",
     "supertest": "^3.3.0",
-    "winston": "^3.1.0"
+    "winston": "^3.1.0",
+    "winston-transport": "^4.2.0"
   }
 }
