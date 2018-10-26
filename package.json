@@ -32,7 +32,7 @@
   },
   "homepage": "https://github.com/yidinghan/koa2-winston#readme",
   "peerDependencies": {
-    "winston": "^2.4.1"
+    "winston": ">= 3.0.0"
   },
   "dependencies": {
     "fast-json-stringify": "^1.9.1",
