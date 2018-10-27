@@ -4,7 +4,7 @@
   "description": "koa2 version winston logger like express-winston",
   "main": "index.js",
   "engines": {
-    "node": ">=7.6"
+    "node": ">=8"
   },
   "scripts": {
     "doc": "documentation readme index.js --section=JSDoc",

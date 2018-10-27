@@ -1,9 +1,8 @@
 language: node_js
 node_js:
+  - '11'
   - '10'
-  - '9'
   - '8'
-  - '7.7'
 cache:
   directories:
     - $HOME/.npm
