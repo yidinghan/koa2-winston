@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="3.0.0"></a>
+# [3.0.0](https://github.com/yidinghan/koa2-winston/compare/v2.5.1...v3.0.0) (2018-10-27)
+
+
+### Features
+
+* **package:** mv winston and winston-transport to dependencies ([1eea08c](https://github.com/yidinghan/koa2-winston/commit/1eea08c))
+* **stringify:** use printf to wrap stringify ([3debb21](https://github.com/yidinghan/koa2-winston/commit/3debb21))
+* **winston:** transports.Stream as default ([0094519](https://github.com/yidinghan/koa2-winston/commit/0094519))
+
+
+### BREAKING CHANGES
+
+* **package:** no need for peer dependencies on winston
+
+
+
 <a name="2.5.1"></a>
 ## [2.5.1](https://github.com/yidinghan/koa2-winston/compare/v2.5.0...v2.5.1) (2018-07-29)
 
