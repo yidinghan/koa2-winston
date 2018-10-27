@@ -1,14 +1,16 @@
 /* eslint no-param-reassign: 0 */
-const winston = require('winston');
+const {
+  createLogger,
+  format: { combine: wfcombine, printf: wfprintf },
+  transports: wtransports,
+} = require('winston');
 const get = require('lodash.get');
 const set = require('lodash.set');
-const assign = require('lodash.assign');
 const unset = require('lodash.unset');
 const onFinished = require('on-finished');
 const { format } = require('util');
 
 const stringify = require('./stringify');
-const FastJsonConsole = require('./fast_json_console');
 
 /**
  * clone object
@@ -156,7 +158,7 @@ const getLogLevel = (statusCode = 200, defaultLevel = 'info') => {
  * logger middleware for koa2 use winston
  *
  * @param {object} [payload={}] - input arguments
- * @param {object[]} [payload.transports=[new FastJsonConsole({ stringify })]] customize transports
+ * @param {object[]} [payload.transports=[new winston.transports.Stream({ stream: process.stdout })]] customize transports
  * @param {string} [payload.level='info'] - default log level of logger
  * @param {string} [payload.reqKeys=['headers','url','method','httpVersion', 'href', 'query', 'length']] - default request fields to be logged
  * @param {string} [payload.reqSelect=[]] - additional request fields to be logged
@@ -164,7 +166,7 @@ const getLogLevel = (statusCode = 200, defaultLevel = 'info') => {
  * @param {string} [payload.resKeys=['headers', 'status']] - default response fields to be logged
  * @param {string} [payload.resSelect=[]] - additional response fields to be logged
  * @param {string} [payload.resUnselect=[]] - response field will be removed from the log
- * @param {winston.transports.StreamTransportInstance} [payload.logger] - customize winston logger
+ * @param {wtransports} [payload.logger] - customize winston logger
  * @param {string} [payload.msg=HTTP %s %s] - customize log msg
  * @return {function} logger middleware
  * @example
@@ -199,16 +201,16 @@ const getLogLevel = (statusCode = 200, defaultLevel = 'info') => {
  */
 const logger = (payload = {}) => {
   const {
-    transports = [
-      new winston.transports.Stream({
-        stream: process.stdout,
-      }),
-    ],
+    transports = [new wtransports.Stream({ stream: process.stdout })],
     level: defaultLevel = 'info',
     msg = 'HTTP %s %s',
   } = payload;
 
-  const winstonLogger = payload.logger || winston.createLogger({ transports });
+  const winstonLogger = payload.logger
+    || createLogger({
+      transports,
+      format: wfcombine(wfprintf(stringify)),
+    });
   const reqSerializer = serializer.req(payload);
   const resSerializer = serializer.res(payload);
 
@@ -253,5 +255,4 @@ module.exports = {
   serializer,
   getLogLevel,
   stringify,
-  FastJsonConsole,
 };
