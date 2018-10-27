@@ -31,9 +31,6 @@
     "url": "https://github.com/yidinghan/koa2-winston/issues"
   },
   "homepage": "https://github.com/yidinghan/koa2-winston#readme",
-  "peerDependencies": {
-    "winston": ">= 3.0.0"
-  },
   "dependencies": {
     "fast-json-stringify": "^1.9.1",
     "lodash.assign": "^4.2.0",
