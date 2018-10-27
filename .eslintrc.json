@@ -1,6 +1,7 @@
 {
-    "extends": "airbnb-base",
-    "plugins": [
-        "import"
-    ]
+  "extends": "airbnb-base",
+  "rules": {
+    "max-len": ["error", { "ignoreComments": true }]
+  },
+  "plugins": ["import"]
 }
