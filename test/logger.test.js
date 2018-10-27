@@ -11,12 +11,8 @@ class CustomTransport extends Transport {
     this.msgs = msgs;
   }
 
-  log(level, msg, meta, callback) {
-    this.msgs.push({
-      level,
-      msg,
-      meta,
-    });
+  log(info, callback) {
+    this.msgs.push(info);
     callback(null, true);
   }
 }
@@ -125,11 +121,11 @@ test('successful use custom transport', async (t) => {
 
   t.is(msgs.length, 1, 'should record 1 msg');
 
-  const [{ level, msg, meta }] = msgs;
+  const [{ level, message, ...meta }] = msgs;
   t.is(level, 'info');
-  t.is(msg, 'HTTP GET /');
-  t.is(Object.keys(meta).length, 6);
-  ['req', 'res', 'duration', 'started_at', 'level', 'message'].forEach((key) => {
+  t.is(message, 'HTTP GET /');
+  t.is(Object.keys(meta).length, 4);
+  ['req', 'res', 'duration', 'started_at'].forEach((key) => {
     t.true(Object.keys(meta).includes(key));
   });
 });
@@ -143,8 +139,8 @@ test('successful display correct url in msg', async (t) => {
     .post('/test')
     .expect(200);
 
-  const [{ msg }] = msgs;
-  t.is(msg, 'HTTP POST /test');
+  const [{ message }] = msgs;
+  t.is(message, 'HTTP POST /test');
 });
 
 test('should use input level as default level', async (t) => {
