@@ -109,7 +109,15 @@ const serializer = {
     const {
       reqUnselect = ['headers.cookie'],
       reqSelect = [],
-      reqKeys = ['headers', 'url', 'method', 'httpVersion', 'href', 'query', 'length'],
+      reqKeys = [
+        'headers',
+        'url',
+        'method',
+        'httpVersion',
+        'href',
+        'query',
+        'length',
+      ],
     } = payload;
 
     return keysRecorder({
@@ -119,7 +127,11 @@ const serializer = {
     });
   },
   res: (payload) => {
-    const { resUnselect = [], resSelect = [], resKeys = ['headers', 'status'] } = payload;
+    const {
+      resUnselect = [],
+      resSelect = [],
+      resKeys = ['headers', 'status'],
+    } = payload;
 
     return keysRecorder({
       defaults: resKeys,
@@ -144,18 +156,15 @@ const getLogLevel = (statusCode = 200, defaultLevel = 'info') => {
  * logger middleware for koa2 use winston
  *
  * @param {object} [payload={}] - input arguments
- * @param {object[]} [payload.transports=[new FastJsonConsole({ stringify })]]
- *                   - customize transports
+ * @param {object[]} [payload.transports=[new FastJsonConsole({ stringify })]] customize transports
  * @param {string} [payload.level='info'] - default log level of logger
- * @param {string} [payload.reqKeys=['headers', 'url', 'method',
- *                  'httpVersion', 'href', 'query', 'length']] - default request fields to be logged
+ * @param {string} [payload.reqKeys=['headers','url','method','httpVersion', 'href', 'query', 'length']] - default request fields to be logged
  * @param {string} [payload.reqSelect=[]] - additional request fields to be logged
- * @param {string} [payload.reqUnselect=['headers.cookie']] - request field
- *                  will be removed from the log
+ * @param {string} [payload.reqUnselect=['headers.cookie']] - request field will be removed from the log
  * @param {string} [payload.resKeys=['headers', 'status']] - default response fields to be logged
  * @param {string} [payload.resSelect=[]] - additional response fields to be logged
  * @param {string} [payload.resUnselect=[]] - response field will be removed from the log
- * @param {string} [payload.logger] - customize winston logger
+ * @param {winston.transports} [payload.logger] - customize winston logger
  * @param {string} [payload.msg=HTTP %s %s] - customize log msg
  * @return {function} logger middleware
  * @example
@@ -190,8 +199,12 @@ const getLogLevel = (statusCode = 200, defaultLevel = 'info') => {
  */
 const logger = (payload = {}) => {
   const {
-    transports = [new FastJsonConsole({ stringify, assign })],
-    level = 'info',
+    transports = [
+      new winston.transports.Stream({
+        stream: process.stdout,
+      }),
+    ],
+    level: defaultLevel = 'info',
     msg = 'HTTP %s %s',
   } = payload;
 
@@ -203,8 +216,13 @@ const logger = (payload = {}) => {
     meta.res = resSerializer(ctx.response);
     meta.duration = Date.now() - meta.started_at;
 
-    const logLevel = getLogLevel(meta.res.status, level);
-    winstonLogger[logLevel](loggerMsg, meta);
+    const level = getLogLevel(meta.res.status, defaultLevel);
+    // winstonLogger[logLevel](loggerMsg, meta);
+    winstonLogger.log({
+      level,
+      message: loggerMsg,
+      ...meta,
+    });
   };
 
   return async (ctx, next) => {
@@ -221,7 +239,10 @@ const logger = (payload = {}) => {
       // catch and throw it later
       error = e;
     } finally {
-      onFinished(ctx.response, onResponseFinished.bind(null, ctx, loggerMsg, meta));
+      onFinished(
+        ctx.response,
+        onResponseFinished.bind(null, ctx, loggerMsg, meta),
+      );
     }
 
     if (error) {
