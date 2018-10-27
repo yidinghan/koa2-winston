@@ -164,7 +164,7 @@ const getLogLevel = (statusCode = 200, defaultLevel = 'info') => {
  * @param {string} [payload.resKeys=['headers', 'status']] - default response fields to be logged
  * @param {string} [payload.resSelect=[]] - additional response fields to be logged
  * @param {string} [payload.resUnselect=[]] - response field will be removed from the log
- * @param {winston.transports} [payload.logger] - customize winston logger
+ * @param {winston.transports.StreamTransportInstance} [payload.logger] - customize winston logger
  * @param {string} [payload.msg=HTTP %s %s] - customize log msg
  * @return {function} logger middleware
  * @example
@@ -217,12 +217,8 @@ const logger = (payload = {}) => {
     meta.duration = Date.now() - meta.started_at;
 
     const level = getLogLevel(meta.res.status, defaultLevel);
-    // winstonLogger[logLevel](loggerMsg, meta);
-    winstonLogger.log({
-      level,
-      message: loggerMsg,
-      ...meta,
-    });
+    // @ts-ignore
+    winstonLogger.log({ level, message: loggerMsg, ...meta });
   };
 
   return async (ctx, next) => {
