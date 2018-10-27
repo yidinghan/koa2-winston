@@ -109,15 +109,7 @@ const serializer = {
     const {
       reqUnselect = ['headers.cookie'],
       reqSelect = [],
-      reqKeys = [
-        'headers',
-        'url',
-        'method',
-        'httpVersion',
-        'href',
-        'query',
-        'length',
-      ],
+      reqKeys = ['headers', 'url', 'method', 'httpVersion', 'href', 'query', 'length'],
     } = payload;
 
     return keysRecorder({
@@ -127,11 +119,7 @@ const serializer = {
     });
   },
   res: (payload) => {
-    const {
-      resUnselect = [],
-      resSelect = [],
-      resKeys = ['headers', 'status'],
-    } = payload;
+    const { resUnselect = [], resSelect = [], resKeys = ['headers', 'status'] } = payload;
 
     return keysRecorder({
       defaults: resKeys,
@@ -156,7 +144,8 @@ const getLogLevel = (statusCode = 200, defaultLevel = 'info') => {
  * logger middleware for koa2 use winston
  *
  * @param {object} [payload={}] - input arguments
- * @param {object[]} [payload.transports=[new FastJsonConsole({ stringify })]] - customize transports
+ * @param {object[]} [payload.transports=[new FastJsonConsole({ stringify })]]
+ *                   - customize transports
  * @param {string} [payload.level='info'] - default log level of logger
  * @param {string} [payload.reqKeys=['headers', 'url', 'method',
  *                  'httpVersion', 'href', 'query', 'length']] - default request fields to be logged
@@ -206,7 +195,7 @@ const logger = (payload = {}) => {
     msg = 'HTTP %s %s',
   } = payload;
 
-  const winstonLogger = payload.logger || new winston.Logger({ transports });
+  const winstonLogger = payload.logger || winston.createLogger({ transports });
   const reqSerializer = serializer.req(payload);
   const resSerializer = serializer.res(payload);
 
@@ -232,10 +221,7 @@ const logger = (payload = {}) => {
       // catch and throw it later
       error = e;
     } finally {
-      onFinished(
-        ctx.response,
-        onResponseFinished.bind(null, ctx, loggerMsg, meta),
-      );
+      onFinished(ctx.response, onResponseFinished.bind(null, ctx, loggerMsg, meta));
     }
 
     if (error) {

@@ -32,10 +32,10 @@
   },
   "homepage": "https://github.com/yidinghan/koa2-winston#readme",
   "peerDependencies": {
-    "winston": "^2.4.1"
+    "winston": ">= 3.0.0"
   },
   "dependencies": {
-    "fast-json-stringify": "^1.7.1",
+    "fast-json-stringify": "^1.9.1",
     "lodash.assign": "^4.2.0",
     "lodash.get": "^4.4.2",
     "lodash.set": "^4.3.2",
@@ -43,16 +43,17 @@
     "on-finished": "^2.3.0"
   },
   "devDependencies": {
-    "@types/node": "^10.5.4",
+    "@types/node": "^10.12.0",
     "ava": "^0.25.0",
     "benchmark": "^2.1.4",
-    "documentation": "^8.0.2",
-    "eslint": "^5.2.0",
-    "eslint-config-airbnb-base": "^13.0.0",
-    "eslint-plugin-import": "^2.13.0",
-    "koa": "^2.5.2",
-    "nyc": "^12.0.2",
-    "supertest": "^3.1.0",
-    "winston": "^2.4.2"
+    "documentation": "^8.1.2",
+    "eslint": "^5.7.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "koa": "^2.6.1",
+    "nyc": "^13.1.0",
+    "supertest": "^3.3.0",
+    "winston": "^3.1.0",
+    "winston-transport": "^4.2.0"
   }
 }

@@ -1,15 +1,16 @@
 const { test } = require('ava');
 const Koa = require('koa');
-const winston = require('winston');
+const Transport = require('winston-transport');
 const request = require('supertest');
 
 const { logger, getLogLevel } = require('../index');
 
-class CustomTransport extends winston.Transport {
+class CustomTransport extends Transport {
   constructor(msgs = []) {
     super();
     this.msgs = msgs;
   }
+
   log(level, msg, meta, callback) {
     this.msgs.push({
       level,
@@ -66,7 +67,9 @@ test('log level should be warn when status=400', async (t) => {
     },
     warnHandler,
   );
-  await request(app).post('/test').expect(400);
+  await request(app)
+    .post('/test')
+    .expect(400);
 
   const [{ level }] = msgs;
   t.is(level, 'warn');
@@ -76,7 +79,10 @@ test('cookies should still exists', async (t) => {
   const msgs = [];
   let cookie = '';
   const cookieHandler = (ctx) => {
-    cookie = ctx.headers.cookie;
+    const {
+      headers: { cookie: requestCookie },
+    } = ctx;
+    cookie = requestCookie;
     ctx.body = 'dingding';
   };
   const app = useLogger(
@@ -85,7 +91,10 @@ test('cookies should still exists', async (t) => {
     },
     cookieHandler,
   );
-  await request(app).post('/test').set('Cookie', 'ding=ding').expect(200);
+  await request(app)
+    .post('/test')
+    .set('Cookie', 'ding=ding')
+    .expect(200);
 
   const [{ level }] = msgs;
   t.is(level, 'info');
@@ -98,7 +107,9 @@ test('successful required logger', (t) => {
 
 test('successful create default middleware', async (t) => {
   const app = useLogger();
-  const { text } = await request(app).get('/').expect(200);
+  const { text } = await request(app)
+    .get('/')
+    .expect(200);
 
   t.is(text, 'dingding', 'should get dingding as text');
 });
@@ -108,15 +119,17 @@ test('successful use custom transport', async (t) => {
   const app = useLogger({
     transports: [new CustomTransport(msgs)],
   });
-  await request(app).get('/').expect(200);
+  await request(app)
+    .get('/')
+    .expect(200);
 
   t.is(msgs.length, 1, 'should record 1 msg');
 
   const [{ level, msg, meta }] = msgs;
   t.is(level, 'info');
   t.is(msg, 'HTTP GET /');
-  t.is(Object.keys(meta).length, 4);
-  ['req', 'res', 'duration', 'started_at'].forEach((key) => {
+  t.is(Object.keys(meta).length, 6);
+  ['req', 'res', 'duration', 'started_at', 'level', 'message'].forEach((key) => {
     t.true(Object.keys(meta).includes(key));
   });
 });
@@ -126,7 +139,9 @@ test('successful display correct url in msg', async (t) => {
   const app = useLogger({
     transports: [new CustomTransport(msgs)],
   });
-  await request(app).post('/test').expect(200);
+  await request(app)
+    .post('/test')
+    .expect(200);
 
   const [{ msg }] = msgs;
   t.is(msg, 'HTTP POST /test');
@@ -138,7 +153,9 @@ test('should use input level as default level', async (t) => {
     level: 'error',
     transports: [new CustomTransport(msgs)],
   });
-  await request(app).post('/test').expect(200);
+  await request(app)
+    .post('/test')
+    .expect(200);
 
   const [{ level }] = msgs;
   t.is(level, 'error');
@@ -155,7 +172,9 @@ test('should still record logger when error have been throw out', async (t) => {
     },
     errorHandler,
   );
-  await request(app).post('/test').expect(500);
+  await request(app)
+    .post('/test')
+    .expect(500);
 
   const [{ level }] = msgs;
   t.is(level, 'error');
