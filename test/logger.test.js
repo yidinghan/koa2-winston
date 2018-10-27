@@ -21,6 +21,7 @@ const defaultHandler = (ctx) => {
 };
 const useLogger = (payload, handler = defaultHandler) => {
   const app = new Koa();
+  // @ts-ignore
   app.use(logger(payload));
   app.use(handler);
 
