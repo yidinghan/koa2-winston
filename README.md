@@ -30,7 +30,7 @@ Add logger to your koa2 server in 3 lines
   - [Schema Stringify](#schema-stringify)
   - [v1.7.1 vs v2.4.0](#v171-vs-v240)
   - [Math.floor vs parseInt](#mathfloor-vs-parseint)
-- [v3](#v3)
+  - [v3](#v3)
 - [JSDoc](#jsdoc)
     - [Table of Contents](#table-of-contents)
   - [clone](#clone)
@@ -318,7 +318,7 @@ Testing in Chrome 70.0.3505 / Mac OS X 10.13.5
 
 `Math.floor` is 5.06x faster then `parseInt` in this case
 
-# v3
+## v3
 
 Finally, winston v3 support. But winston will install as dependencies not peerDependencies.
 

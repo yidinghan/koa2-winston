@@ -215,21 +215,18 @@ const logger = (payload = {}) => {
   const reqSerializer = serializer.req(payload);
   const resSerializer = serializer.res(payload);
 
-  const onResponseFinished = (ctx, loggerMsg, meta) => {
-    meta.res = resSerializer(ctx.response);
-    meta.duration = Date.now() - meta.started_at;
+  const onResponseFinished = (ctx, info) => {
+    info.res = resSerializer(ctx.response);
+    info.duration = Date.now() - info.started_at;
 
-    const level = getLogLevel(meta.res.status, defaultLevel);
+    info.level = getLogLevel(info.res.status, defaultLevel);
     // @ts-ignore
-    winstonLogger.log({ level, message: loggerMsg, ...meta });
+    winstonLogger.log(info);
   };
 
   return async (ctx, next) => {
-    const meta = {
-      req: reqSerializer(ctx.request),
-      started_at: Date.now(),
-    };
-    const loggerMsg = format(msg, meta.req.method, meta.req.url);
+    const info = { req: reqSerializer(ctx.request), started_at: Date.now() };
+    info.message = format(msg, info.req.method, info.req.url);
 
     let error;
     try {
@@ -238,10 +235,7 @@ const logger = (payload = {}) => {
       // catch and throw it later
       error = e;
     } finally {
-      onFinished(
-        ctx.response,
-        onResponseFinished.bind(null, ctx, loggerMsg, meta),
-      );
+      onFinished(ctx.response, onResponseFinished.bind(null, ctx, info));
     }
 
     if (error) {
