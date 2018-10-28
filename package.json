@@ -33,7 +33,6 @@
   "homepage": "https://github.com/yidinghan/koa2-winston#readme",
   "dependencies": {
     "fast-json-stringify": "^1.9.1",
-    "lodash.assign": "^4.2.0",
     "lodash.get": "^4.4.2",
     "lodash.set": "^4.3.2",
     "lodash.unset": "^4.5.2",
@@ -49,6 +48,7 @@
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.14.0",
     "koa": "^2.6.1",
+    "lodash.assign": "^4.2.0",
     "nyc": "^13.1.0",
     "supertest": "^3.3.0",
     "winston-transport": "^4.2.0"
