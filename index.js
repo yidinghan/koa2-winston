@@ -13,6 +13,12 @@ const {
   format: { combine: wfcombine, printf: wfprintf },
 } = winston;
 
+const C = {
+  INFO: 'info',
+  WARN: 'warn',
+  ERROR: 'error',
+};
+
 /**
  * clone object
  *
@@ -144,12 +150,12 @@ const serializer = {
   },
 };
 
-const getLogLevel = (statusCode = 200, defaultLevel = 'info') => {
+const getLogLevel = (statusCode = 200, defaultLevel = C.INFO) => {
   switch (Math.floor(statusCode / 100)) {
     case 5:
-      return 'error';
+      return C.ERROR;
     case 4:
-      return 'warn';
+      return C.WARN;
     default:
       return defaultLevel;
   }
@@ -203,7 +209,7 @@ const getLogLevel = (statusCode = 200, defaultLevel = 'info') => {
 const logger = (payload = {}) => {
   const {
     transports = [new winston.transports.Stream({ stream: process.stdout })],
-    level: defaultLevel = 'info',
+    level: defaultLevel = C.INFO,
     msg = 'HTTP %s %s',
   } = payload;
 
