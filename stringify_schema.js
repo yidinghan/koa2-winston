@@ -1,4 +1,5 @@
 const set = require('lodash.set');
+const get = require('lodash.get');
 
 const defaultReqSchema = {
   title: 'koa2-winston-info-req',
@@ -64,6 +65,10 @@ const defaultInfoSchema = {
 };
 
 const DOT_RE = /\./;
+/**
+ * @param {string} path
+ */
+const asJsonSchemaPath = path => path.replace(DOT_RE, '.properties.');
 
 /**
  * logger middleware for koa2 use winston
@@ -95,32 +100,30 @@ const generateSchema = (payload) => {
   } = payload;
 
   const reqSchema = {};
-  reqKeys.concat(reqSelect).forEach((path) => {
-    if (!DOT_RE.test(path)) {
-      reqSchema[path] = defaultReqSchema.properties[path] || {};
-    }
-    // path.split('.').reduce(() => {});
-  });
+  reqKeys
+    .concat(reqSelect)
+    .map(asJsonSchemaPath)
+    .forEach((path) => {
+      set(reqSchema, path, get(defaultResSchema, path, {}));
+    });
   reqUnselect.forEach((path) => {
-    if (!DOT_RE.test(path)) {
-      reqSchema[path] = { type: 'null' };
-    }
+    set(reqSchema, path, { type: 'null' });
   });
   defaultInfoSchema.definitions.req = reqSchema;
 
   const resSchema = {};
-  resKeys.concat(resSelect).forEach((path) => {
-    if (!DOT_RE.test(path)) {
-      resSchema[path] = defaultResSchema.properties[path] || {};
-    }
-    // path.split('.').reduce(() => {});
-  });
-  resUnselect.forEach((path) => {
-    if (!DOT_RE.test(path)) {
-      resSchema[path] = { type: 'null' };
-    }
+  resKeys
+    .concat(resSelect)
+    .map(asJsonSchemaPath)
+    .forEach((path) => {
+      set(reqSchema, path, get(defaultResSchema, path, {}));
+    });
+  resUnselect.map(asJsonSchemaPath).forEach((path) => {
+    set(reqSchema, path, { type: 'null' });
   });
   defaultInfoSchema.definitions.res = resSchema;
+
+  return defaultInfoSchema;
 };
 
 module.exports = { defaultInfoSchema, generateSchema };
