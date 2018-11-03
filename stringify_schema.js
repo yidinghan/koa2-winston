@@ -28,11 +28,12 @@ const defaultReqSchema = {
     protocol: { type: 'string' },
     secure: { type: 'string' },
     ip: { type: 'string' },
+    length: { type: 'integer' },
   },
 };
 
 const defaultResSchema = {
-  title: 'koa2-winston-info',
+  title: 'koa2-winston-info-res',
   type: 'object',
   properties: {
     headers: {
@@ -103,24 +104,32 @@ const generateSchema = (payload) => {
   reqKeys
     .concat(reqSelect)
     .map(asJsonSchemaPath)
+    .map(path => `properties.${path}`)
     .forEach((path) => {
-      set(reqSchema, path, get(defaultResSchema, path, {}));
+      set(reqSchema, path, get(defaultReqSchema, path, {}));
     });
-  reqUnselect.forEach((path) => {
-    set(reqSchema, path, { type: 'null' });
-  });
+  reqUnselect
+    .map(asJsonSchemaPath)
+    .map(path => `properties.${path}`)
+    .forEach((path) => {
+      set(reqSchema, path, { type: 'null' });
+    });
   defaultInfoSchema.definitions.req = reqSchema;
 
   const resSchema = {};
   resKeys
     .concat(resSelect)
     .map(asJsonSchemaPath)
+    .map(path => `properties.${path}`)
     .forEach((path) => {
-      set(reqSchema, path, get(defaultResSchema, path, {}));
+      set(resSchema, path, get(defaultResSchema, path, {}));
     });
-  resUnselect.map(asJsonSchemaPath).forEach((path) => {
-    set(reqSchema, path, { type: 'null' });
-  });
+  resUnselect
+    .map(asJsonSchemaPath)
+    .map(path => `properties.${path}`)
+    .forEach((path) => {
+      set(resSchema, path, { type: 'null' });
+    });
   defaultInfoSchema.definitions.res = resSchema;
 
   return defaultInfoSchema;
