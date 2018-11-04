@@ -33,14 +33,17 @@ Add logger to your koa2 server in 3 lines
   - [v3](#v3)
 - [JSDoc](#jsdoc)
     - [Table of Contents](#table-of-contents)
-  - [clone](#clone)
-    - [Parameters](#parameters)
-  - [keysRecorder](#keysrecorder)
-    - [Parameters](#parameters-1)
-    - [Examples](#examples-1)
   - [logger](#logger)
+    - [Parameters](#parameters)
+    - [Examples](#examples-1)
+  - [asJsonSchemaPath](#asjsonschemapath)
+    - [Parameters](#parameters-1)
+  - [ensureTypeObject](#ensuretypeobject)
     - [Parameters](#parameters-2)
-    - [Examples](#examples-2)
+  - [schemaKeysHandler](#schemakeyshandler)
+    - [Parameters](#parameters-3)
+  - [generateSchema](#generateschema)
+    - [Parameters](#parameters-4)
 
 <!-- /TOC -->
 
@@ -330,85 +333,17 @@ With better backward compatibility, users don't have to worry about the new vers
 
 ### Table of Contents
 
-- [clone](#clone)
-  - [Parameters](#parameters)
-- [keysRecorder](#keysrecorder)
-  - [Parameters](#parameters-1)
-  - [Examples](#examples)
 - [logger](#logger)
+  - [Parameters](#parameters)
+  - [Examples](#examples)
+- [asJsonSchemaPath](#asjsonschemapath)
+  - [Parameters](#parameters-1)
+- [ensureTypeObject](#ensuretypeobject)
   - [Parameters](#parameters-2)
-  - [Examples](#examples-1)
-
-## clone
-
-clone object
-
-### Parameters
-
-- `obj` **any**
-
-## keysRecorder
-
-keysRecorder
-use ldoash pick, get and set to collect data from given target object
-
-### Parameters
-
-- `payload` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** input arguments (optional, default `{}`)
-  - `payload.defaults` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>?** default keys will be collected
-  - `payload.selects` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>?** keys will be collected as
-    additional part
-  - `payload.unselects` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>?** keys that will be ignored at last
-
-### Examples
-
-```javascript
-// without payload
-const recorder = keysRecorder();
-recorder(); // {}
-recorder({ foo: 1, bar: 2, foobar: { a: 3, b: 4 } }); // {}
-
-// with defaults
-const recorder = keysRecorder({ defaults: ['foo'] });
-recorder(); // {}
-recorder({ foo: 1, bar: 2, foobar: { a: 3, b: 4 } }); // { foo: 1 }
-
-// with defaults and selects
-const recorder = keysRecorder({ defaults: ['foo'], selects: ['foobar'] });
-recorder(); // {}
-recorder({
-  foo: 1,
-  bar: 2,
-  foobar: { a: 3, b: 4 },
-}); // { foo: 1, foobar: { a: 3, b: 4 } }
-
-// with defaults and unselects
-const recorder = keysRecorder({
-  defaults: ['foobar'],
-  unselects: ['foobar.a'],
-});
-recorder(); // {}
-recorder({
-  foo: 1,
-  bar: 2,
-  foobar: { a: 3, b: 4 },
-}); // { foobar: { a: 3 } }
-
-// with defaults and selects and unselects
-const recorder = keysRecorder({
-  defaults: ['foo'],
-  selects: ['foobar'],
-  unselects: ['foobar.b'],
-});
-recorder(); // {}
-recorder({
-  foo: 1,
-  bar: 2,
-  foobar: { a: 3, b: 4 },
-}); // { foo: 1, foobar: { a: 3 } }
-```
-
-Returns **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** closure function, setting by given payload
+- [schemaKeysHandler](#schemakeyshandler)
+  - [Parameters](#parameters-3)
+- [generateSchema](#generateschema)
+  - [Parameters](#parameters-4)
 
 ## logger
 
@@ -462,3 +397,36 @@ app.use(logger());
 ```
 
 Returns **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** logger middleware
+
+## asJsonSchemaPath
+
+### Parameters
+
+- `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)**
+
+## ensureTypeObject
+
+### Parameters
+
+- `schema` **[object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** generated json schema
+
+## schemaKeysHandler
+
+### Parameters
+
+- `keys` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>** schema keys
+- `handler`
+
+## generateSchema
+
+logger middleware for koa2 use winston
+
+### Parameters
+
+- `payload` **[object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** input arguments (optional, default `{}`)
+  - `payload.reqKeys` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>** default request fields to be logged (optional, default `['headers','url','method','httpVersion','href','query','length']`)
+  - `payload.reqSelect` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>** additional request fields to be logged (optional, default `[]`)
+  - `payload.reqUnselect` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>** request field will be removed from the log (optional, default `['headers.cookie']`)
+  - `payload.resKeys` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>** default response fields to be logged (optional, default `['headers','status']`)
+  - `payload.resSelect` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>** additional response fields to be logged (optional, default `[]`)
+  - `payload.resUnselect` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>** response field will be removed from the log (optional, default `[]`)
