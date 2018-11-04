@@ -15,6 +15,7 @@ const C = {
   INFO: 'info',
   WARN: 'warn',
   ERROR: 'error',
+  MSG: 'HTTP %s %s',
 };
 
 const getLogLevel = (statusCode = 200, defaultLevel = C.INFO) => {
@@ -77,7 +78,7 @@ const logger = (payload = {}) => {
   const {
     transports = [new winston.transports.Stream({ stream: process.stdout })],
     level: defaultLevel = C.INFO,
-    msg = 'HTTP %s %s',
+    msg = C.MSG,
   } = payload;
 
   // @ts-ignore
