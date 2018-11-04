@@ -15,7 +15,7 @@ test('should get default schema on definitions', (t) => {
           },
           url: { type: 'string' },
           method: { type: 'string' },
-          httpVersion: {},
+          httpVersion: { type: 'string' },
           href: { type: 'string' },
           query: { type: 'object', additionalProperties: { type: 'string' } },
           length: { type: 'integer' },

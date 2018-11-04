@@ -28,6 +28,7 @@ const defaultReqSchema = {
     protocol: { type: 'string' },
     secure: { type: 'string' },
     ip: { type: 'string' },
+    httpVersion: { type: 'string' },
     length: { type: 'integer' },
   },
 };
