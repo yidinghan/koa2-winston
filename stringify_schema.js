@@ -1,5 +1,6 @@
 const set = require('lodash.set');
 const get = require('lodash.get');
+const mapvalues = require('lodash.mapvalues');
 
 const defaultSchemas = {
   res: {
@@ -48,22 +49,21 @@ const defaultSchemas = {
       length: { type: 'integer' },
     },
   },
-};
-
-const defaultInfoSchema = {
-  title: 'koa2-winston-info',
-  definitions: {
-    req: {},
-    res: {},
-  },
-  type: 'object',
-  properties: {
-    started_at: { type: 'integer' },
-    duration: { type: 'integer' },
-    level: { type: 'string' },
-    message: { type: 'string' },
-    req: { $ref: '#/definitions/req' },
-    res: { $ref: '#/definitions/res' },
+  info: {
+    title: 'koa2-winston-info',
+    definitions: {
+      req: {},
+      res: {},
+    },
+    type: 'object',
+    properties: {
+      started_at: { type: 'integer' },
+      duration: { type: 'integer' },
+      level: { type: 'string' },
+      message: { type: 'string' },
+      req: { $ref: '#/definitions/req' },
+      res: { $ref: '#/definitions/res' },
+    },
   },
 };
 
@@ -72,6 +72,18 @@ const DOT_RE = /\./g;
  * @param {string} path
  */
 const asJsonSchemaPath = path => path.replace(DOT_RE, '.properties.');
+
+/**
+ * @param {object} schema - generated json schema
+ */
+const ensureTypeObject = schema => mapvalues(schema, (value) => {
+  if (!value.properties) {
+    return value;
+  }
+  // eslint-disable-next-line no-param-reassign
+  value.type = 'object';
+  return ensureTypeObject(value);
+});
 
 /**
  * @param {string[]} keys - schema keys
@@ -126,8 +138,9 @@ const generateSchema = (payload) => {
     payload,
   );
 
+  const { info: infoSchema } = defaultSchemas;
   ['req', 'res'].forEach((prefix) => {
-    defaultInfoSchema.definitions[prefix] = schemaKeysHandlers({
+    infoSchema.definitions[prefix] = schemaKeysHandlers({
       keys: options[`${prefix}Keys`],
       select: options[`${prefix}Select`],
       unselect: options[`${prefix}Unselect`],
@@ -135,7 +148,7 @@ const generateSchema = (payload) => {
     });
   });
 
-  return defaultInfoSchema;
+  return infoSchema;
 };
 
-module.exports = { defaultInfoSchema, generateSchema, asJsonSchemaPath };
+module.exports = { defaultSchemas, generateSchema, asJsonSchemaPath };
