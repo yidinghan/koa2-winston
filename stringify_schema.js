@@ -77,11 +77,13 @@ const asJsonSchemaPath = path => path.replace(DOT_RE, '.properties.');
  * @param {object} schema - generated json schema
  */
 const ensureTypeObject = schema => mapvalues(schema, (value) => {
-  if (!value.properties) {
+  if (typeof value !== 'object') {
     return value;
   }
-  // eslint-disable-next-line no-param-reassign
-  value.type = 'object';
+  if (value.properties) {
+    // eslint-disable-next-line no-param-reassign
+    value.type = 'object';
+  }
   return ensureTypeObject(value);
 });
 
@@ -96,14 +98,14 @@ const schemaKeysHandler = (keys, handler) => keys
 const schemaKeysHandlers = ({
   keys, select, unselect, schema,
 }) => {
-  const reqSchema = {};
+  const outputSchema = {};
   schemaKeysHandler(keys.concat(select), (path) => {
-    set(reqSchema, path, get(schema, path, {}));
+    set(outputSchema, path, get(schema, path, {}));
   });
   schemaKeysHandler(unselect, (path) => {
-    set(reqSchema, path, { type: 'null' });
+    set(outputSchema, path, { type: 'null' });
   });
-  return reqSchema;
+  return ensureTypeObject(outputSchema);
 };
 
 /**
