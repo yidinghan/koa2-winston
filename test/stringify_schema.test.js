@@ -5,6 +5,7 @@ test('default schema on definitions', (t) => {
   const schema = generateSchema({});
   t.deepEqual(schema.definitions, {
     req: {
+      type: 'object',
       properties: {
         headers: {
           type: 'object',
@@ -20,6 +21,7 @@ test('default schema on definitions', (t) => {
       },
     },
     res: {
+      type: 'object',
       properties: {
         headers: { type: 'object', additionalProperties: { type: 'string' } },
         status: { type: 'string' },
@@ -32,6 +34,7 @@ test('res.body.success as type:null', (t) => {
   const schema = generateSchema({ resUnselect: ['body.success'] });
   t.deepEqual(schema.definitions, {
     req: {
+      type: 'object',
       properties: {
         headers: {
           type: 'object',
@@ -47,6 +50,7 @@ test('res.body.success as type:null', (t) => {
       },
     },
     res: {
+      type: 'object',
       properties: {
         headers: { type: 'object', additionalProperties: { type: 'string' } },
         status: { type: 'string' },
