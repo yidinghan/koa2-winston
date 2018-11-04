@@ -1,12 +1,10 @@
 /* eslint no-param-reassign: 0 */
 const winston = require('winston');
-const get = require('lodash.get');
-const set = require('lodash.set');
-const unset = require('lodash.unset');
 const onFinished = require('on-finished');
 const { format } = require('util');
+const fastJson = require('fast-json-stringify');
 
-const stringify = require('./stringify');
+const { generateSchema, defaultSchemas } = require('./stringify_schema');
 
 const {
   createLogger,
@@ -17,137 +15,6 @@ const C = {
   INFO: 'info',
   WARN: 'warn',
   ERROR: 'error',
-};
-
-/**
- * clone object
- *
- * @param {*} obj
- */
-const clone = (obj) => {
-  if (obj === null || typeof obj !== 'object') {
-    return obj;
-  }
-
-  const copycat = {};
-  Object.keys(obj).forEach((key) => {
-    copycat[key] = clone(obj[key]);
-  });
-
-  return copycat;
-};
-
-/**
- * keysRecorder
- * use ldoash pick, get and set to collect data from given target object
- *
- * @param {Object} payload - input arguments
- * @param {string[]} [payload.defaults] - default keys will be collected
- * @param {string[]} [payload.selects] - keys will be collected as
- * additional part
- * @param {string[]} [payload.unselects] - keys that will be ignored at last
- * @return {function} closure function, setting by given payload
- * @example
- * // without payload
- * const recorder = keysRecorder();
- * recorder() // {}
- * recorder({ foo: 1, bar: 2, foobar: { a: 3, b: 4 } }) // {}
- *
- * // with defaults
- * const recorder = keysRecorder({ defaults: ['foo'] });
- * recorder() // {}
- * recorder({ foo: 1, bar: 2, foobar: { a: 3, b: 4 } }) // { foo: 1 }
- *
- * // with defaults and selects
- * const recorder = keysRecorder({ defaults: ['foo'], selects: ['foobar'] });
- * recorder() // {}
- * recorder({
- *   foo: 1,
- *   bar: 2,
- *   foobar: { a: 3, b: 4 }
- * }) // { foo: 1, foobar: { a: 3, b: 4 } }
- *
- * // with defaults and unselects
- * const recorder = keysRecorder({ defaults: ['foobar'], unselects: ['foobar.a'] });
- * recorder() // {}
- * recorder({
- *   foo: 1,
- *   bar: 2,
- *   foobar: { a: 3, b: 4 }
- * }) // { foobar: { a: 3 } }
- *
- * // with defaults and selects and unselects
- * const recorder = keysRecorder({
- *   defaults: ['foo'],
- *   selects: ['foobar'],
- *   unselects: ['foobar.b'],
- * });
- * recorder() // {}
- * recorder({
- *   foo: 1,
- *   bar: 2,
- *   foobar: { a: 3, b: 4 }
- * }) // { foo: 1, foobar: { a: 3 } }
- */
-const keysRecorder = (payload = {}) => {
-  const { defaults = [], selects = [], unselects = [] } = payload;
-
-  const finalSelects = defaults.concat(selects);
-  return (target) => {
-    if (!target) {
-      return {};
-    }
-
-    let logObject = {};
-    finalSelects.forEach((path) => {
-      set(logObject, path, get(target, path));
-    });
-    if (unselects.length) {
-      logObject = clone(logObject);
-      unselects.forEach((path) => {
-        unset(logObject, path);
-      });
-    }
-
-    return logObject;
-  };
-};
-
-const serializer = {
-  req: (payload) => {
-    const {
-      reqUnselect = ['headers.cookie'],
-      reqSelect = [],
-      reqKeys = [
-        'headers',
-        'url',
-        'method',
-        'httpVersion',
-        'href',
-        'query',
-        'length',
-      ],
-    } = payload;
-
-    return keysRecorder({
-      defaults: reqKeys,
-      selects: reqSelect,
-      unselects: reqUnselect,
-    });
-  },
-  res: (payload) => {
-    const {
-      resUnselect = [],
-      resSelect = [],
-      resKeys = ['headers', 'status'],
-    } = payload;
-
-    return keysRecorder({
-      defaults: resKeys,
-      selects: resSelect,
-      unselects: resUnselect,
-    });
-  },
 };
 
 const getLogLevel = (statusCode = 200, defaultLevel = C.INFO) => {
@@ -213,16 +80,16 @@ const logger = (payload = {}) => {
     msg = 'HTTP %s %s',
   } = payload;
 
+  // @ts-ignore
+  const stringify = fastJson(generateSchema(payload));
   const winstonLogger = payload.logger
     || createLogger({
       transports,
       format: wfcombine(wfprintf(stringify)),
     });
-  const reqSerializer = serializer.req(payload);
-  const resSerializer = serializer.res(payload);
 
   const onResponseFinished = (ctx, info) => {
-    info.res = resSerializer(ctx.response);
+    info.res = ctx.response;
     info.duration = Date.now() - info.started_at;
 
     info.level = getLogLevel(info.res.status, defaultLevel);
@@ -231,7 +98,7 @@ const logger = (payload = {}) => {
   };
 
   return async (ctx, next) => {
-    const info = { req: reqSerializer(ctx.request), started_at: Date.now() };
+    const info = { req: ctx.request, started_at: Date.now() };
     info.message = format(msg, info.req.method, info.req.url);
 
     let error;
@@ -252,8 +119,7 @@ const logger = (payload = {}) => {
 
 module.exports = {
   logger,
-  keysRecorder,
-  serializer,
   getLogLevel,
-  stringify,
+  generateSchema,
+  defaultSchemas,
 };
