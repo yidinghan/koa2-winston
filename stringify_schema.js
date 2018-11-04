@@ -105,7 +105,7 @@ const schemaKeysHandlers = ({
   schemaKeysHandler(unselect, (path) => {
     set(outputSchema, path, { type: 'null' });
   });
-  return ensureTypeObject(outputSchema);
+  return outputSchema;
 };
 
 /**
@@ -150,6 +150,7 @@ const generateSchema = (payload) => {
     });
   });
 
+  ensureTypeObject(infoSchema.definitions);
   return infoSchema;
 };
 
