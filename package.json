@@ -49,6 +49,7 @@
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.14.0",
     "koa": "^2.6.1",
+    "lodash": "^4.17.11",
     "lodash.assign": "^4.2.0",
     "nyc": "^13.1.0",
     "supertest": "^3.3.0",
