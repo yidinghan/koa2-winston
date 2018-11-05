@@ -36,6 +36,8 @@ test('parse message, default info obj', async (t) => {
   const app = useLogger({ transports: [new CustomTransport(infos)] });
   await request(app)
     .post('/test')
+    .set('host', 'ding.ding')
+    .set('user-agent', 'ding.ding.ding')
     .expect(200);
 
   const [info] = infos;
@@ -46,7 +48,23 @@ test('parse message, default info obj', async (t) => {
   t.deepEqual(_.pick(infoObj, ['level', 'message', 'req', 'res']), {
     level: 'info',
     message: 'HTTP POST /test',
-    req: { url: '/test', method: 'POST' },
-    res: { status: '200' },
+    req: {
+      url: '/test',
+      method: 'POST',
+      header: {
+        'accept-encoding': 'gzip, deflate',
+        'user-agent': 'ding.ding.ding',
+        connection: 'close',
+        host: 'ding.ding',
+        'content-length': '0',
+      },
+    },
+    res: {
+      status: '200',
+      header: {
+        'content-type': 'text/plain; charset=utf-8',
+        'content-length': '8',
+      },
+    },
   });
 });
