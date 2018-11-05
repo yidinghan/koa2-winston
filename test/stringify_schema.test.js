@@ -30,7 +30,7 @@ test('default schema on definitions', (t) => {
   });
 });
 
-test('res.body.success should not work', (t) => {
+test('unselect res.body.success should not work', (t) => {
   const schema = generateSchema({ resUnselect: ['body.success'] });
   t.deepEqual(schema.definitions, {
     req: {
@@ -56,5 +56,17 @@ test('res.body.success should not work', (t) => {
         status: { type: 'string' },
       },
     },
+  });
+});
+
+test('unselect res.status should not work', (t) => {
+  const schema = generateSchema({
+    reqKeys: [],
+    resKeys: [],
+    resUnselect: ['status'],
+  });
+  t.deepEqual(schema.definitions, {
+    req: { type: 'object', properties: {} },
+    res: { type: 'object', properties: {} },
   });
 });
