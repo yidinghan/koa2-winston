@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const { test } = require('ava');
 const Koa = require('koa');
 const Transport = require('winston-transport');
@@ -122,9 +123,10 @@ test('successful use custom transport', async (t) => {
 
   t.is(msgs.length, 1, 'should record 1 msg');
 
-  const [{ level, message, ...meta }] = msgs;
-  t.is(level, 'info');
-  t.is(message, 'HTTP GET /');
+  const [info] = msgs;
+  t.is(info.level, 'info');
+  t.is(info.message, 'HTTP GET /');
+  const meta = _.omit(info, ['level', 'message']);
   t.is(Object.keys(meta).length, 4);
   ['req', 'res', 'duration', 'started_at'].forEach((key) => {
     t.true(Object.keys(meta).includes(key));
