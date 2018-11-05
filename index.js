@@ -4,7 +4,11 @@ const onFinished = require('on-finished');
 const { format } = require('util');
 const fastJson = require('fast-json-stringify');
 
-const { generateSchema, defaultSchemas } = require('./stringify_schema');
+const {
+  generateSchema,
+  generateFormat,
+  defaultSchemas,
+} = require('./stringify_schema');
 
 const {
   createLogger,
@@ -82,18 +86,11 @@ const logger = (payload = {}) => {
   } = payload;
 
   // @ts-ignore
-  const stringify = fastJson(generateSchema(payload));
+  const stringifyFormat = generateFormat(payload);
   const winstonLogger = payload.logger
     || createLogger({
       transports,
-      format: wfcombine(
-        wfprintf((info) => {
-          const infoMsg = stringify(info);
-          // rewrite info object as omit function
-          Object.assign(info, JSON.parse(infoMsg));
-          return infoMsg;
-        }),
-      ),
+      format: wfcombine(wfprintf(stringifyFormat)),
     });
 
   const onResponseFinished = (ctx, info) => {
@@ -129,5 +126,6 @@ module.exports = {
   logger,
   getLogLevel,
   generateSchema,
+  generateFormat,
   defaultSchemas,
 };
