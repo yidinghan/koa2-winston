@@ -66,8 +66,8 @@ test('parse message, default info obj', async (t) => {
     res: {
       status: '200',
       header: {
-        'content-type': 'text/plain; charset=utf-8',
-        'content-length': '8',
+        'content-type': 'application/json; charset=utf-8',
+        'content-length': '15',
       },
     },
   });
@@ -113,7 +113,7 @@ test('parse message, omit req.body.password', async (t) => {
     res: {
       header: {
         'content-type': 'application/json; charset=utf-8',
-        'content-length': '8',
+        'content-length': '15',
       },
       status: '200',
     },
@@ -144,7 +144,7 @@ test('parse message, only log req.query', async (t) => {
     res: {
       header: {
         'content-type': 'application/json; charset=utf-8',
-        'content-length': '8',
+        'content-length': '15',
       },
       status: '200',
     },
@@ -171,5 +171,34 @@ test('parse message, only log res.body', async (t) => {
     message: 'HTTP GET /test',
     req: {},
     res: { body: { ding: 'ding' } },
+  });
+});
+
+test('parse message, omit res.body.token', async (t) => {
+  const infos = [];
+  const app = useLogger(
+    {
+      transports: [new CustomTransport(infos)],
+      reqKeys: [],
+      resKeys: ['body'],
+      resUnselect: ['body.token'],
+    },
+    (ctx) => {
+      ctx.body = { token: 'dingtoken', name: 'ding' };
+    },
+  );
+  await request(app)
+    .put('/testtest')
+    .expect(200);
+
+  const [info] = infos;
+  const infoObj = JSON.parse(info[MESSAGE]);
+
+  t.true(Date.now() - infoObj.started_at > infoObj.duration);
+  t.deepEqual(_.pick(infoObj, ['level', 'message', 'req', 'res']), {
+    level: 'info',
+    message: 'HTTP PUT /testtest',
+    req: {},
+    res: { body: { name: 'ding', token: null } },
   });
 });

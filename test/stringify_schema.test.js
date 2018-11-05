@@ -30,7 +30,7 @@ test('default schema on definitions', (t) => {
   });
 });
 
-test('res.body.success as type:null', (t) => {
+test('res.body.success should not work', (t) => {
   const schema = generateSchema({ resUnselect: ['body.success'] });
   t.deepEqual(schema.definitions, {
     req: {
@@ -54,7 +54,6 @@ test('res.body.success as type:null', (t) => {
       properties: {
         header: { type: 'object', additionalProperties: { type: 'string' } },
         status: { type: 'string' },
-        body: { type: 'object', properties: { success: { type: 'null' } } },
       },
     },
   });
