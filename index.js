@@ -86,7 +86,14 @@ const logger = (payload = {}) => {
   const winstonLogger = payload.logger
     || createLogger({
       transports,
-      format: wfcombine(wfprintf(stringify)),
+      format: wfcombine(
+        wfprintf((info) => {
+          const infoMsg = stringify(info);
+          // rewrite info object as omit function
+          Object.assign(info, JSON.parse(infoMsg));
+          return infoMsg;
+        }),
+      ),
     });
 
   const onResponseFinished = (ctx, info) => {
