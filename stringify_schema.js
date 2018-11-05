@@ -2,6 +2,9 @@ const set = require('lodash.set');
 const get = require('lodash.get');
 const mapvalues = require('lodash.mapvalues');
 const clonedeep = require('lodash.clonedeep');
+const fastJson = require('fast-json-stringify');
+
+const PREFIXS = ['req', 'res'];
 
 const defaultSchemas = {
   res: {
@@ -142,7 +145,7 @@ const generateSchema = (payload) => {
   );
 
   const { info: infoSchema } = clonedeep(defaultSchemas);
-  ['req', 'res'].forEach((prefix) => {
+  PREFIXS.forEach((prefix) => {
     infoSchema.definitions[prefix] = schemaKeysHandlers({
       keys: options[`${prefix}Keys`],
       select: options[`${prefix}Select`],
@@ -155,4 +158,35 @@ const generateSchema = (payload) => {
   return infoSchema;
 };
 
-module.exports = { defaultSchemas, generateSchema, asJsonSchemaPath };
+const generateFormat = (payload) => {
+  const schema = generateSchema(payload);
+  const stringify = fastJson(schema);
+  const keys = {
+    req: Object.keys(schema.definitions.req.properties),
+    res: Object.keys(schema.definitions.res.properties),
+  };
+  return (info) => {
+    // enforce get properties from koa ctx.request/responseo
+    // in koa, Request.toJSON only return ['method', 'url', 'header']
+    // https://github.com/koajs/koa/blob/master/lib/request.js#L708
+    PREFIXS.forEach((prefix) => {
+      const prefixCopy = {};
+      keys[prefix].forEach((key) => {
+        prefixCopy[key] = info[prefix][key];
+      });
+      info[prefix] = prefixCopy;
+    });
+
+    const infoMsg = stringify(info);
+    // rewrite info object as omit function
+    Object.assign(info, JSON.parse(infoMsg));
+    return infoMsg;
+  };
+};
+
+module.exports = {
+  defaultSchemas,
+  generateSchema,
+  generateFormat,
+  asJsonSchemaPath,
+};

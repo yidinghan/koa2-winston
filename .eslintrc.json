@@ -1,6 +1,7 @@
 {
   "extends": "airbnb-base",
   "rules": {
+    "no-param-reassign": 0,
     "max-len": ["error", { "ignoreComments": true }]
   },
   "plugins": ["import"]
