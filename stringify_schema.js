@@ -33,6 +33,10 @@ const defaultSchemas = {
       url: { type: 'string' },
       method: { type: 'string' },
       href: { type: 'string' },
+      body: {
+        type: 'object',
+        additionalProperties: { type: 'string' },
+      },
       query: {
         type: 'object',
         additionalProperties: { type: 'string' },
