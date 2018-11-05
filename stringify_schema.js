@@ -117,12 +117,14 @@ const schemaKeysHandlers = ({
     set(outputSchema, path, get(schema, path, {}));
   });
   schemaKeysHandler(unselect, (path) => {
-    const pathSplit = path.split('.');
-    if (pathSplit.length > 2) {
-      const parentPath = pathSplit.slice(0, -2).join('.');
-      if (!get(outputSchema, parentPath)) {
-        return;
-      }
+    const parentPath = path.match(DOT_RE).length > 2
+      ? path
+        .split('.')
+        .slice(0, -2)
+        .join('.')
+      : path;
+    if (!get(outputSchema, parentPath)) {
+      return;
     }
     set(outputSchema, path, { type: 'null' });
   });
