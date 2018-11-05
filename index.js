@@ -2,7 +2,6 @@
 const winston = require('winston');
 const onFinished = require('on-finished');
 const { format } = require('util');
-const fastJson = require('fast-json-stringify');
 
 const {
   generateSchema,

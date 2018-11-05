@@ -96,7 +96,13 @@ const ensureTypeObject = schema => mapvalues(schema, (value) => {
 });
 
 /**
+ * @callback schemaKeysHandlerFn
+ * @param {string} path
+ */
+
+/**
  * @param {string[]} keys - schema keys
+ * @param {schemaKeysHandlerFn} handler - assign path
  */
 const schemaKeysHandler = (keys, handler) => keys
   .map(asJsonSchemaPath)
@@ -106,11 +112,18 @@ const schemaKeysHandler = (keys, handler) => keys
 const schemaKeysHandlers = ({
   keys, select, unselect, schema,
 }) => {
-  const outputSchema = {};
+  const outputSchema = { type: 'object', properties: {} };
   schemaKeysHandler(keys.concat(select), (path) => {
     set(outputSchema, path, get(schema, path, {}));
   });
   schemaKeysHandler(unselect, (path) => {
+    const pathSplit = path.split('.');
+    if (pathSplit.length > 2) {
+      const parentPath = pathSplit.slice(0, -2).join('.');
+      if (!get(outputSchema, parentPath)) {
+        return;
+      }
+    }
     set(outputSchema, path, { type: 'null' });
   });
   return outputSchema;
