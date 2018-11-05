@@ -67,7 +67,7 @@ request log will look like
 ```json
 {
   "req": {
-    "headers": {
+    "header": {
       "host": "localhost:3000",
       "connection": "keep-alive",
       "upgrade-insecure-requests": "1",
@@ -84,7 +84,7 @@ request log will look like
   },
   "started_at": 1494554053492,
   "res": {
-    "headers": {
+    "header": {
       "content-type": "application/json; charset=utf-8",
       "content-length": "16"
     },
@@ -106,7 +106,7 @@ app.use(
     transports: new winston.transports.Console({ json: true, stringify: true }),
     level: 'info',
     reqKeys: [
-      'headers',
+      'header',
       'url',
       'method',
       'httpVersion',
@@ -115,8 +115,8 @@ app.use(
       'length',
     ],
     reqSelect: [],
-    reqUnselect: ['headers.cookie'],
-    resKeys: ['headers', 'status'],
+    reqUnselect: ['header.cookie'],
+    resKeys: ['header', 'status'],
     resSelect: [],
     resUnselect: [],
   })
@@ -144,7 +144,7 @@ The req object will be empty
   "req": {},
   "started_at": 1494486039864,
   "res": {
-    "headers": {
+    "header": {
       "content-type": "text/plain; charset=utf-8",
       "content-length": "8"
     },
@@ -171,7 +171,7 @@ The res object will be empty
 ```json
 {
   "req": {
-    "headers": {
+    "header": {
       "host": "127.0.0.1:59534",
       "accept-encoding": "gzip, deflate",
       "user-agent": "node-superagent/3.5.2",
@@ -195,7 +195,7 @@ The res object will be empty
 ```js
 app.use(
   logger({
-    reqUnselect: ['headers.cookies', 'headers.user-agent'],
+    reqUnselect: ['header.cookies', 'header.user-agent'],
   })
 );
 ```
@@ -205,7 +205,7 @@ The UA of request will be ignored
 ```json
 {
   "req": {
-    "headers": {
+    "header": {
       "host": "127.0.0.1:59534",
       "accept-encoding": "gzip, deflate",
       "connection": "close"
@@ -217,7 +217,7 @@ The UA of request will be ignored
   },
   "started_at": 1494486039864,
   "res": {
-    "headers": {
+    "header": {
       "content-type": "text/plain; charset=utf-8",
       "content-length": "8"
     },
@@ -244,7 +244,7 @@ The `success` field on `body` will be recorded
 ```json
 {
   "req": {
-    "headers": {
+    "header": {
       "host": "127.0.0.1:59534",
       "accept-encoding": "gzip, deflate",
       "connection": "close"
@@ -256,7 +256,7 @@ The `success` field on `body` will be recorded
   },
   "started_at": 1494486039864,
   "res": {
-    "headers": {
+    "header": {
       "content-type": "text/plain; charset=utf-8",
       "content-length": "8"
     },
@@ -354,10 +354,10 @@ logger middleware for koa2 use winston
 - `payload` **[object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** input arguments (optional, default `{}`)
   - `payload.transports` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)>** customize transports (optional, default `[newwinston.transports.Stream({stream:process.stdout})]`)
   - `payload.level` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** default log level of logger (optional, default `'info'`)
-  - `payload.reqKeys` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** default request fields to be logged (optional, default `['headers','url','method','httpVersion','href','query','length']`)
+  - `payload.reqKeys` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** default request fields to be logged (optional, default `['header','url','method','httpVersion','href','query','length']`)
   - `payload.reqSelect` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** additional request fields to be logged (optional, default `[]`)
-  - `payload.reqUnselect` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** request field will be removed from the log (optional, default `['headers.cookie']`)
-  - `payload.resKeys` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** default response fields to be logged (optional, default `['headers','status']`)
+  - `payload.reqUnselect` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** request field will be removed from the log (optional, default `['header.cookie']`)
+  - `payload.resKeys` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** default response fields to be logged (optional, default `['header','status']`)
   - `payload.resSelect` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** additional response fields to be logged (optional, default `[]`)
   - `payload.resUnselect` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** response field will be removed from the log (optional, default `[]`)
   - `payload.logger` **winston.transports.StreamTransportInstance?** customize winston logger
@@ -371,7 +371,7 @@ app.use(logger());
 // request logger look like down here
 // {
 //   "req": {
-//     "headers": {
+//     "header": {
 //       "host": "127.0.0.1:59534",
 //       "accept-encoding": "gzip, deflate",
 //       "user-agent": "node-superagent/3.5.2",
@@ -384,7 +384,7 @@ app.use(logger());
 //   },
 //   "started_at": 1494486039864,
 //   "res": {
-//     "headers": {
+//     "header": {
 //       "content-type": "text/plain; charset=utf-8",
 //       "content-length": "8"
 //     },
@@ -424,9 +424,9 @@ logger middleware for koa2 use winston
 ### Parameters
 
 - `payload` **[object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** input arguments (optional, default `{}`)
-  - `payload.reqKeys` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>** default request fields to be logged (optional, default `['headers','url','method','httpVersion','href','query','length']`)
+  - `payload.reqKeys` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>** default request fields to be logged (optional, default `['header','url','method','httpVersion','href','query','length']`)
   - `payload.reqSelect` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>** additional request fields to be logged (optional, default `[]`)
-  - `payload.reqUnselect` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>** request field will be removed from the log (optional, default `['headers.cookie']`)
-  - `payload.resKeys` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>** default response fields to be logged (optional, default `['headers','status']`)
+  - `payload.reqUnselect` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>** request field will be removed from the log (optional, default `['header.cookie']`)
+  - `payload.resKeys` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>** default response fields to be logged (optional, default `['header','status']`)
   - `payload.resSelect` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>** additional response fields to be logged (optional, default `[]`)
   - `payload.resUnselect` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>** response field will be removed from the log (optional, default `[]`)

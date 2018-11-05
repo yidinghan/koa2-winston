@@ -35,10 +35,10 @@ const getLogLevel = (statusCode = 200, defaultLevel = C.INFO) => {
  * @param {object} [payload={}] - input arguments
  * @param {object[]} [payload.transports=[new winston.transports.Stream({ stream: process.stdout })]] customize transports
  * @param {string} [payload.level='info'] - default log level of logger
- * @param {string} [payload.reqKeys=['headers','url','method','httpVersion', 'href', 'query', 'length']] - default request fields to be logged
+ * @param {string} [payload.reqKeys=['header','url','method','httpVersion', 'href', 'query', 'length']] - default request fields to be logged
  * @param {string} [payload.reqSelect=[]] - additional request fields to be logged
- * @param {string} [payload.reqUnselect=['headers.cookie']] - request field will be removed from the log
- * @param {string} [payload.resKeys=['headers', 'status']] - default response fields to be logged
+ * @param {string} [payload.reqUnselect=['header.cookie']] - request field will be removed from the log
+ * @param {string} [payload.resKeys=['header', 'status']] - default response fields to be logged
  * @param {string} [payload.resSelect=[]] - additional response fields to be logged
  * @param {string} [payload.resUnselect=[]] - response field will be removed from the log
  * @param {winston.transports.StreamTransportInstance} [payload.logger] - customize winston logger
@@ -50,7 +50,7 @@ const getLogLevel = (statusCode = 200, defaultLevel = C.INFO) => {
  * // request logger look like down here
  * // {
  * //   "req": {
- * //     "headers": {
+ * //     "header": {
  * //       "host": "127.0.0.1:59534",
  * //       "accept-encoding": "gzip, deflate",
  * //       "user-agent": "node-superagent/3.5.2",
@@ -63,7 +63,7 @@ const getLogLevel = (statusCode = 200, defaultLevel = C.INFO) => {
  * //   },
  * //   "started_at": 1494486039864,
  * //   "res": {
- * //     "headers": {
+ * //     "header": {
  * //       "content-type": "text/plain; charset=utf-8",
  * //       "content-length": "8"
  * //     },
