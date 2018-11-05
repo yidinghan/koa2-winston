@@ -1,6 +1,7 @@
 const set = require('lodash.set');
 const get = require('lodash.get');
 const mapvalues = require('lodash.mapvalues');
+const clonedeep = require('lodash.clonedeep');
 
 const defaultSchemas = {
   res: {
@@ -140,7 +141,7 @@ const generateSchema = (payload) => {
     payload,
   );
 
-  const { info: infoSchema } = defaultSchemas;
+  const { info: infoSchema } = clonedeep(defaultSchemas);
   ['req', 'res'].forEach((prefix) => {
     infoSchema.definitions[prefix] = schemaKeysHandlers({
       keys: options[`${prefix}Keys`],
