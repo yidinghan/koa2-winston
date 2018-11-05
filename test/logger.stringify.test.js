@@ -110,7 +110,7 @@ test('parse message, omit req.body.password', async (t) => {
       href: 'http://ding.ding/test',
       query: {},
       length: 49,
-      body: { password: null },
+      body: { password: null, username: 'dingding' },
     },
     res: {
       header: {
