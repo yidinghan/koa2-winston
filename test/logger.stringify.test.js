@@ -44,7 +44,6 @@ test('parse message, default info obj', async (t) => {
 
   const [info] = infos;
   const infoObj = JSON.parse(info[MESSAGE]);
-  t.truthy(infoObj);
 
   t.true(Date.now() - infoObj.started_at > infoObj.duration);
   t.deepEqual(_.pick(infoObj, ['level', 'message', 'req', 'res']), {
@@ -90,7 +89,6 @@ test('parse message, omit req.body.password', async (t) => {
 
   const [info] = infos;
   const infoObj = JSON.parse(info[MESSAGE]);
-  t.truthy(infoObj);
 
   t.true(Date.now() - infoObj.started_at > infoObj.duration);
   t.deepEqual(_.pick(infoObj, ['level', 'message', 'req', 'res']), {
@@ -111,6 +109,37 @@ test('parse message, omit req.body.password', async (t) => {
       query: {},
       length: 49,
       body: { password: null, username: 'dingding' },
+    },
+    res: {
+      header: {
+        'content-type': 'text/plain; charset=utf-8',
+        'content-length': '8',
+      },
+      status: '200',
+    },
+  });
+});
+
+test('parse message, only log req.query', async (t) => {
+  const infos = [];
+  const app = useLogger({
+    transports: [new CustomTransport(infos)],
+    reqKeys: ['query'],
+  });
+  await request(app)
+    .get('/test')
+    .query({ ding: 'ding' })
+    .expect(200);
+
+  const [info] = infos;
+  const infoObj = JSON.parse(info[MESSAGE]);
+
+  t.true(Date.now() - infoObj.started_at > infoObj.duration);
+  t.deepEqual(_.pick(infoObj, ['level', 'message', 'req', 'res']), {
+    level: 'info',
+    message: 'HTTP GET /test?ding=ding',
+    req: {
+      query: { ding: 'ding' },
     },
     res: {
       header: {
