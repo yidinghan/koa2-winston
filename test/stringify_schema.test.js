@@ -7,7 +7,7 @@ test('default schema on definitions', (t) => {
     req: {
       type: 'object',
       properties: {
-        headers: {
+        header: {
           type: 'object',
           additionalProperties: { type: 'string' },
           properties: { cookie: { type: 'null' } },
@@ -23,7 +23,7 @@ test('default schema on definitions', (t) => {
     res: {
       type: 'object',
       properties: {
-        headers: { type: 'object', additionalProperties: { type: 'string' } },
+        header: { type: 'object', additionalProperties: { type: 'string' } },
         status: { type: 'string' },
       },
     },
@@ -36,7 +36,7 @@ test('res.body.success as type:null', (t) => {
     req: {
       type: 'object',
       properties: {
-        headers: {
+        header: {
           type: 'object',
           additionalProperties: { type: 'string' },
           properties: { cookie: { type: 'null' } },
@@ -52,7 +52,7 @@ test('res.body.success as type:null', (t) => {
     res: {
       type: 'object',
       properties: {
-        headers: { type: 'object', additionalProperties: { type: 'string' } },
+        header: { type: 'object', additionalProperties: { type: 'string' } },
         status: { type: 'string' },
         body: { type: 'object', properties: { success: { type: 'null' } } },
       },

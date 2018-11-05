@@ -77,7 +77,7 @@ test('cookies should still exists', async (t) => {
   let cookie = '';
   const cookieHandler = (ctx) => {
     const {
-      headers: { cookie: requestCookie },
+      header: { cookie: requestCookie },
     } = ctx;
     cookie = requestCookie;
     ctx.body = 'dingding';

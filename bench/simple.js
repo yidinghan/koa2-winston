@@ -24,7 +24,7 @@ suite
           request: {
             method: 'get',
             url: '/ding',
-            headers: {
+            header: {
               cookie: 'ding',
             },
           },

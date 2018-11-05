@@ -7,7 +7,7 @@ const defaultSchemas = {
     title: 'koa2-winston-info-res',
     type: 'object',
     properties: {
-      headers: {
+      header: {
         type: 'object',
         additionalProperties: { type: 'string' },
       },
@@ -22,7 +22,7 @@ const defaultSchemas = {
     title: 'koa2-winston-info-req',
     type: 'object',
     properties: {
-      headers: {
+      header: {
         type: 'object',
         additionalProperties: { type: 'string' },
       },
@@ -112,20 +112,20 @@ const schemaKeysHandlers = ({
  * logger middleware for koa2 use winston
  *
  * @param {object} [payload={}] - input arguments
- * @param {string[]} [payload.reqKeys=['headers','url','method','httpVersion', 'href', 'query', 'length']] - default request fields to be logged
+ * @param {string[]} [payload.reqKeys=['header','url','method','httpVersion', 'href', 'query', 'length']] - default request fields to be logged
  * @param {string[]} [payload.reqSelect=[]] - additional request fields to be logged
- * @param {string[]} [payload.reqUnselect=['headers.cookie']] - request field will be removed from the log
- * @param {string[]} [payload.resKeys=['headers', 'status']] - default response fields to be logged
+ * @param {string[]} [payload.reqUnselect=['header.cookie']] - request field will be removed from the log
+ * @param {string[]} [payload.resKeys=['header', 'status']] - default response fields to be logged
  * @param {string[]} [payload.resSelect=[]] - additional response fields to be logged
  * @param {string[]} [payload.resUnselect=[]] - response field will be removed from the log
  */
 const generateSchema = (payload) => {
   const options = Object.assign(
     {
-      reqUnselect: ['headers.cookie'],
+      reqUnselect: ['header.cookie'],
       reqSelect: [],
       reqKeys: [
-        'headers',
+        'header',
         'url',
         'method',
         'httpVersion',
@@ -135,7 +135,7 @@ const generateSchema = (payload) => {
       ],
       resUnselect: [],
       resSelect: [],
-      resKeys: ['headers', 'status'],
+      resKeys: ['header', 'status'],
     },
     payload,
   );
