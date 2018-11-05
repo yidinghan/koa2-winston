@@ -21,7 +21,7 @@ class CustomTransport extends Transport {
   }
 }
 const defaultHandler = (ctx) => {
-  ctx.body = 'dingding';
+  ctx.body = { ding: 'ding' };
 };
 const useLogger = (payload, handler = defaultHandler) => {
   const app = new Koa();
@@ -112,7 +112,7 @@ test('parse message, omit req.body.password', async (t) => {
     },
     res: {
       header: {
-        'content-type': 'text/plain; charset=utf-8',
+        'content-type': 'application/json; charset=utf-8',
         'content-length': '8',
       },
       status: '200',
@@ -143,10 +143,33 @@ test('parse message, only log req.query', async (t) => {
     },
     res: {
       header: {
-        'content-type': 'text/plain; charset=utf-8',
+        'content-type': 'application/json; charset=utf-8',
         'content-length': '8',
       },
       status: '200',
     },
+  });
+});
+
+test('parse message, only log res.body', async (t) => {
+  const infos = [];
+  const app = useLogger({
+    transports: [new CustomTransport(infos)],
+    reqKeys: [],
+    resKeys: ['body'],
+  });
+  await request(app)
+    .get('/test')
+    .expect(200);
+
+  const [info] = infos;
+  const infoObj = JSON.parse(info[MESSAGE]);
+
+  t.true(Date.now() - infoObj.started_at > infoObj.duration);
+  t.deepEqual(_.pick(infoObj, ['level', 'message', 'req', 'res']), {
+    level: 'info',
+    message: 'HTTP GET /test',
+    req: {},
+    res: { body: { ding: 'ding' } },
   });
 });
