@@ -2,6 +2,42 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="3.1.0"></a>
+# [3.1.0](https://github.com/yidinghan/koa2-winston/compare/v3.0.2...v3.1.0) (2018-11-06)
+
+
+### Bug Fixes
+
+* **stringify:** ensure type object in generate fn ([3a103e6](https://github.com/yidinghan/koa2-winston/commit/3a103e6))
+* **stringify:** ignore not parent unselect paths ([95437bd](https://github.com/yidinghan/koa2-winston/commit/95437bd))
+* **stringify:** missing httpVersion in defaultReqSchema ([74aa62d](https://github.com/yidinghan/koa2-winston/commit/74aa62d))
+* **stringify:** missing uniq path handler and prefix ([9c3cb1e](https://github.com/yidinghan/koa2-winston/commit/9c3cb1e))
+
+
+### Features
+
+* **logger:** omit keys info keys ([333f5aa](https://github.com/yidinghan/koa2-winston/commit/333f5aa))
+* **logger:** rename {req,res}.headers to {req,res}.header ([1e5b89f](https://github.com/yidinghan/koa2-winston/commit/1e5b89f))
+* remove key recorder and use stringify schema ([61b13d0](https://github.com/yidinghan/koa2-winston/commit/61b13d0))
+* **package:** mv lodash.assign to dev dependencies ([2adc855](https://github.com/yidinghan/koa2-winston/commit/2adc855))
+* rename meta to info ([9f64f08](https://github.com/yidinghan/koa2-winston/commit/9f64f08))
+* **stringify:** clone default schemas when generate ([fa15bba](https://github.com/yidinghan/koa2-winston/commit/fa15bba))
+* **stringify:** ensuretypeobject in schemaKeysHandlers ([5f8adec](https://github.com/yidinghan/koa2-winston/commit/5f8adec))
+* **stringify:** generate schema fn ([df17a22](https://github.com/yidinghan/koa2-winston/commit/df17a22))
+* **stringify:** generateFormat fn to copy req/res ([5c631a5](https://github.com/yidinghan/koa2-winston/commit/5c631a5))
+* **stringify:** predefined req.body schema ([1327244](https://github.com/yidinghan/koa2-winston/commit/1327244))
+* **stringify:** top level key should also ignore ([6f0e028](https://github.com/yidinghan/koa2-winston/commit/6f0e028))
+* **stringify schema:** init generate fn for winston log info obj ([31a83ed](https://github.com/yidinghan/koa2-winston/commit/31a83ed))
+* **stringify schema:** use asJsonSchemaPath for easy lodash.get/set ([ce78410](https://github.com/yidinghan/koa2-winston/commit/ce78410))
+
+
+### BREAKING CHANGES
+
+* **logger:** rename {req,res}.headers to {req,res}.header in the log info object. like from `{
+req: { headers: { } } }` to `{ req: { header: { } } }`
+
+
+
 <a name="3.0.2"></a>
 ## [3.0.2](https://github.com/yidinghan/koa2-winston/compare/v3.0.1...v3.0.2) (2018-10-27)
 
