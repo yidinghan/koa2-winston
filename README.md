@@ -346,7 +346,11 @@ total ops/sec { 'v3.1.0': 541854 }
 Biggest change
 - Remove key recorder
 - Generate json-schema for fast-json-stringify, not only for object serialization (log message), but also as key selector.
-
+- Log info object key rename.
+  ```diff
+  - {req,res}.headers
+  + {req,res}.header
+  ```
 
 # JSDoc
 
