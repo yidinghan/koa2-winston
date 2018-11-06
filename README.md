@@ -41,10 +41,12 @@ Add logger to your koa2 server in 3 lines
     - [Parameters](#parameters-1)
   - [ensureTypeObject](#ensuretypeobject)
     - [Parameters](#parameters-2)
-  - [schemaKeysHandler](#schemakeyshandler)
+  - [schemaKeysHandlerFn](#schemakeyshandlerfn)
     - [Parameters](#parameters-3)
-  - [generateSchema](#generateschema)
+  - [schemaKeysHandler](#schemakeyshandler)
     - [Parameters](#parameters-4)
+  - [generateSchema](#generateschema)
+    - [Parameters](#parameters-5)
 
 <!-- /TOC -->
 
@@ -344,6 +346,7 @@ total ops/sec { 'v3.1.0': 541854 }
 > The above statistics come from `npm run bench`.
 
 Biggest change
+
 - Remove key recorder
 - Generate json-schema for fast-json-stringify, not only for object serialization (log message), but also as key selector.
 - Log info object key rename.
@@ -365,10 +368,12 @@ Biggest change
   - [Parameters](#parameters-1)
 - [ensureTypeObject](#ensuretypeobject)
   - [Parameters](#parameters-2)
-- [schemaKeysHandler](#schemakeyshandler)
+- [schemaKeysHandlerFn](#schemakeyshandlerfn)
   - [Parameters](#parameters-3)
-- [generateSchema](#generateschema)
+- [schemaKeysHandler](#schemakeyshandler)
   - [Parameters](#parameters-4)
+- [generateSchema](#generateschema)
+  - [Parameters](#parameters-5)
 
 ## logger
 
@@ -435,12 +440,20 @@ Returns **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference
 
 - `schema` **[object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** generated json schema
 
+## schemaKeysHandlerFn
+
+Type: [Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)
+
+### Parameters
+
+- `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)**
+
 ## schemaKeysHandler
 
 ### Parameters
 
 - `keys` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>** schema keys
-- `handler`
+- `handler` **[schemaKeysHandlerFn](#schemakeyshandlerfn)** assign path
 
 ## generateSchema
 
