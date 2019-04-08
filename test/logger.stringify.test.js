@@ -1,4 +1,5 @@
-const { test } = require('ava');
+import test from 'ava';
+
 const Koa = require('koa');
 const bodyParser = require('koa-bodyparser');
 const Transport = require('winston-transport');

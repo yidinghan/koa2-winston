@@ -1,4 +1,5 @@
-const { test } = require('ava');
+import test from 'ava';
+
 const { generateSchema } = require('../stringify_schema');
 
 test('default schema on definitions', (t) => {

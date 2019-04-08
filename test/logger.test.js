@@ -1,5 +1,6 @@
+import test from 'ava';
+
 const _ = require('lodash');
-const { test } = require('ava');
 const Koa = require('koa');
 const Transport = require('winston-transport');
 const request = require('supertest');
