@@ -5,3 +5,4 @@ processed*.txt
 *.cpuprofile
 *.log
 test
+README.CN.md
