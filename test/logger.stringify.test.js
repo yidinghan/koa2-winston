@@ -195,7 +195,7 @@ test('parse message, omit res.body.token', async (t) => {
   const [info] = infos;
   const infoObj = JSON.parse(info[MESSAGE]);
 
-  t.true(Date.now() - infoObj.started_at > infoObj.duration);
+  t.true(Date.now() - infoObj.started_at >= infoObj.duration);
   t.deepEqual(_.pick(infoObj, ['level', 'message', 'req', 'res']), {
     level: 'info',
     message: 'HTTP PUT /testtest',
