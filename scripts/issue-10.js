@@ -11,7 +11,10 @@ const consoleLogger = createLogger({
     format.json(),
     // format.prettyPrint(),
   ),
-  transports: [new transports.File({ filename: 'tmp.error.log' })],
+  transports: [
+    new transports.File({ filename: 'tmp.error.log' }),
+    new transports.Console(),
+  ],
 });
 const middleware = logger({
   // @ts-ignore
