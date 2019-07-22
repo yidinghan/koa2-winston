@@ -14,6 +14,11 @@
     "nyc": "nyc ava && nyc report",
     "test": "nyc ava"
   },
+  "ava": {
+    "files": [
+      "test/**/*"
+    ]
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/yidinghan/koa2-winston.git"
