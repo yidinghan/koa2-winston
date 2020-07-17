@@ -198,7 +198,7 @@ The res object will be empty
 ```js
 app.use(
   logger({
-    reqUnselect: ['header.cookies', 'header.user-agent'],
+    reqUnselect: ['header.cookie', 'header.user-agent'],
   })
 );
 ```
