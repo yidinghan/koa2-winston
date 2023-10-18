@@ -5,3 +5,8 @@ processed*.txt
 *.cpuprofile
 *.log
 test
+.git
+.gitignore
+.github
+.eslintrc
+.prettierrc
