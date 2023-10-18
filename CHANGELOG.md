@@ -1,6 +1,19 @@
-# Change Log
+# Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+## [3.2.0](https://github.com/yidinghan/koa2-winston/compare/v3.1.1...v3.2.0) (2023-10-18)
+
+
+### Features
+
+* **deps:** update to newest version ([24726fc](https://github.com/yidinghan/koa2-winston/commit/24726fc82fbb49099b4dcc93e64df7053925600a))
+* **package:** update fast-json-stringify@1.15.3 ([c2fd149](https://github.com/yidinghan/koa2-winston/commit/c2fd1498d507250efdb021b93dd21a3053a8ac50))
+
+
+### Bug Fixes
+
+* **deps:** bump winston from 3.2.1 to 3.11.0 ([0ec392f](https://github.com/yidinghan/koa2-winston/commit/0ec392faf068ec7cab06891bc96714c5dd5c2f1e))
 
 <a name="3.1.1"></a>
 ## [3.1.1](https://github.com/yidinghan/koa2-winston/compare/v3.1.0...v3.1.1) (2018-11-06)
