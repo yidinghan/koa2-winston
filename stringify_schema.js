@@ -79,12 +79,12 @@ const DOT_RE = /\./g;
 /**
  * @param {string} path
  */
-const asJsonSchemaPath = path => path.replace(DOT_RE, '.properties.');
+const asJsonSchemaPath = (path) => path.replace(DOT_RE, '.properties.');
 
 /**
  * @param {object} schema - generated json schema
  */
-const ensureTypeObject = schema => mapvalues(schema, (value) => {
+const ensureTypeObject = (schema) => mapvalues(schema, (value) => {
   if (typeof value !== 'object') {
     return value;
   }
@@ -106,7 +106,7 @@ const ensureTypeObject = schema => mapvalues(schema, (value) => {
  */
 const schemaKeysHandler = (keys, handler) => keys
   .map(asJsonSchemaPath)
-  .map(path => `properties.${path}`)
+  .map((path) => `properties.${path}`)
   .map(handler);
 
 const schemaKeysHandlers = ({
@@ -143,25 +143,23 @@ const schemaKeysHandlers = ({
  * @param {string[]} [payload.resUnselect=[]] - response field will be removed from the log
  */
 const generateSchema = (payload) => {
-  const options = Object.assign(
-    {
-      reqUnselect: ['header.cookie'],
-      reqSelect: [],
-      reqKeys: [
-        'header',
-        'url',
-        'method',
-        'httpVersion',
-        'href',
-        'query',
-        'length',
-      ],
-      resUnselect: [],
-      resSelect: [],
-      resKeys: ['header', 'status'],
-    },
-    payload,
-  );
+  const options = {
+    reqUnselect: ['header.cookie'],
+    reqSelect: [],
+    reqKeys: [
+      'header',
+      'url',
+      'method',
+      'httpVersion',
+      'href',
+      'query',
+      'length',
+    ],
+    resUnselect: [],
+    resSelect: [],
+    resKeys: ['header', 'status'],
+    ...payload,
+  };
 
   const { info: infoSchema } = clonedeep(defaultSchemas);
   PREFIXS.forEach((prefix) => {
