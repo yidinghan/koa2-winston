@@ -35,7 +35,7 @@ const defaultSchemas = {
       href: { type: 'string' },
       body: {
         type: 'object',
-        additionalProperties: { type: 'string' },
+        additionalProperties: true,
       },
       query: {
         type: 'object',
