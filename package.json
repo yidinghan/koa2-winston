@@ -37,7 +37,7 @@
   },
   "homepage": "https://github.com/yidinghan/koa2-winston#readme",
   "dependencies": {
-    "fast-json-stringify": "^5.8.0",
+    "fast-json-stringify": "^6.0.0",
     "lodash.clonedeep": "^4.5.0",
     "lodash.get": "^4.4.2",
     "lodash.mapvalues": "^4.6.0",
