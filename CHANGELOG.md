@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.2.1](https://github.com/yidinghan/koa2-winston/compare/v3.2.0...v3.2.1) (2024-10-24)
+
 ## [3.2.0](https://github.com/yidinghan/koa2-winston/compare/v3.1.1...v3.2.0) (2023-10-18)
 
 
