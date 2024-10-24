@@ -10,3 +10,6 @@ test
 .github
 .eslintrc
 .prettierrc
+CHANGELOG.md
+README.CN.md
+README.md
